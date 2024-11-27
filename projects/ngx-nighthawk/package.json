@@ -1,0 +1,36 @@
+{
+  "name": "ngx-nighthawk",
+  "version": "7.0.17",
+  "peerDependencies": {
+    "@angular/cdk": "^19.0.0",
+    "@angular/common": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "font-awesome": "^4.7.0",
+    "ngx-highlightjs": "^12.0.0",
+    "ngx-quill": "^27.0.0",
+    "quill": "^2.0.2",
+    "swiper": "^11.0.0",
+    "validator": "^13.11.0"
+  },
+  "dependencies": {
+    "font-awesome": "^4.7.0",
+    "moment-timezone": "^0.5.45",
+    "ngx-highlightjs": "^12.0.0",
+    "ngx-quill": "^27.0.0",
+    "query-string": "^9.1.1",
+    "quill": "^2.0.2",
+    "swiper": "^11.0.0",
+    "tslib": "^2.3.0",
+    "validator": "^13.11.0"
+  },
+  "sideEffects": false,
+  "devDependencies": {
+    "@types/validator": "^13.11.9"
+  },
+  "author": "Henrik Westerholm",
+  "homepage": "https://nighthawk.evenux.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evenuxjs/ngx-nighthawk"
+  }
+}

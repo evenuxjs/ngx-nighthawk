@@ -1,0 +1,33 @@
+@if (isPaginationCreated) {
+<div class="pagination">
+  <button class="btn-nav left-btn" (click)="prevPage()">
+    <i class="fa fa-angle-left"></i>
+  </button>
+  <div class="page-numbers">
+    @if (currentPage > 2 && totalPages > 3) {
+    <button type="button" class="btn-page" (click)="goToPage(1)">1</button>
+    @if (currentPage > 3 && totalPages > 4) {
+    <span class="dots">...</span>
+    } } @for (page of visiblePages; track page) {
+    <button
+      class="btn-page"
+      [class.btn-selected]="page == currentPage"
+      (click)="goToPage(page)"
+    >
+      {{ page }}
+    </button>
+    } @if (currentPage < totalPages - 2 && totalPages> 4) {
+    <span class="dots">...</span>
+    } @if (currentPage + 1 !== totalPages && currentPage < totalPages &&
+    totalPages> 3) { @if (currentPage !== totalPages && currentPage !=
+    totalPages - 1) {
+    <button type="button" class="btn-page" (click)="goToPage(totalPages)">
+      {{ totalPages }}
+    </button>
+    } }
+  </div>
+  <button type="button" class="btn-nav right-btn" (click)="nextPage()">
+    <i class="fa fa-angle-right"></i>
+  </button>
+</div>
+}

@@ -1,0 +1,52 @@
+.quantity-selector {
+    display: inline-flex;
+    border: 1px solid var(--quantity-selector-border-color);
+    border-radius: var(--quantity-selector-border-radius);
+    overflow: hidden;
+
+    button {
+        background-color: var(--quantity-selector-button-background-color);
+        color: var(--quantity-selector-button-text-color);
+    }
+
+    input {
+        background-color: var(--quantity-selector-input-background-color);
+        color: var(--quantity-selector-input-text-color);
+    }
+
+    &.large {
+        input {
+            max-width: 60px;
+            padding: 4px 8px;
+            text-align: center;
+        }
+    
+        button {
+            padding: 16px 18px;
+        }
+    }
+
+    &.medium {    
+        input {
+            max-width: 60px;
+            padding: 4px 8px;
+            text-align: center;
+        }
+    
+        button {
+            padding: 12px 14px;
+        }
+    }
+
+    &.small {
+        input {
+            max-width: 40px;
+            padding: 4px 8px;
+            text-align: center;
+        }
+    
+        button {
+            padding: 6px 6px;
+        }
+    }
+}

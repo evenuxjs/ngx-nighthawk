@@ -1,0 +1,40 @@
+@import "../styles/mixins";
+
+.cdk-overlay-dark-backdrop {
+  backdrop-filter: blur(5px);
+}
+
+.cdk-global-overlay-wrapper {
+  align-items: flex-start !important;
+}
+
+.dialog-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  padding: 20px;
+}
+
+.dialog-content {
+  width: 100%;
+  max-width: 600px;
+  padding: 40px;
+  border: none;
+  border-radius: var(--dialog-border-radius);
+  -webkit-box-shadow: 0px 0px 40px 0px var(--dialog-shadow-color);
+  -moz-box-shadow: 0px 0px 40px 0px var(--dialog-shadow-color);
+  box-shadow: 0px 0px 40px 0px var(--dialog-shadow-color);
+  background-color: var(--dialog-background-color);
+  border: 2px solid var(--dialog-border-color);
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  margin-top: var(--dialog-margin-top);
+
+  @include media-breakpoint-down(lg) {
+    padding: 16px;
+  }
+}
+
+.login-dialog .dialog-content {
+  max-width: 600px;
+}

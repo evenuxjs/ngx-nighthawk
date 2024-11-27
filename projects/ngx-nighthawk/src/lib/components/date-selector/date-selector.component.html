@@ -1,0 +1,79 @@
+<button
+  class="main-btn"
+  type="button"
+  nighthawk-button
+  nighthawk-controlled-dropdown-trigger
+  [color]="color"
+  [size]="size"
+  [border]="border"
+  [rounded]="rounded"
+  [dropdownTrigger]="calendarDropdown"
+  [isOpen]="showCalendarDropdown"
+  (click)="showCalendarDropdown = true"
+  [class.w-100]="fullWidth"
+  [class.justify-content-start]="textAlign === 'start'"
+  [class.justify-content-center]="textAlign === 'center'"
+  [class.justify-content-end]="textAlign === 'end'"
+  [ngClass]="buttonClasses"
+>
+  <span *ngIf="!selectedDate">
+    {{ buttonSelectDateText }}
+  </span>
+  <span *ngIf="selectedDate">
+    {{ selectedDate | date : dateFormatExpression }}
+  </span>
+</button>
+
+<nighthawk-dropdown [offset]="dropdownOffset" #calendarDropdown>
+  <div class="row gx-2 mb-2" *ngIf="showMonthSelector || showYearSelector">
+    <div class="col" *ngIf="showMonthSelector">
+      <nighthawk-select
+        [(ngModel)]="selectedMonth"
+        [hasSearch]="false"
+        [color]="color"
+        size="small"
+        [rounded]="true"
+        [options]="monthOptions"
+        nameField="name"
+        valueField="value"
+        [placeholder]="buttonSelectMonthText"
+      />
+    </div>
+    <div class="col" *ngIf="showYearSelector">
+      <nighthawk-select
+        [(ngModel)]="selectedYear"
+        [hasSearch]="false"
+        [color]="color"
+        size="small"
+        [rounded]="true"
+        [options]="yearOptions"
+        nameField="name"
+        valueField="value"
+        [placeholder]="buttonSelectYearText"
+      />
+    </div>
+  </div>
+
+  <nighthawk-calendar
+    size="small"
+    [month]="selectedMonth"
+    [year]="selectedYear"
+    (selectedDay)="onSelectDay($event)"
+    [dayNames]="dayNames"
+    class="d-block mb-2"
+  />
+
+  <div class="w-100 text-end mb-2">
+    <button
+      nighthawk-button
+      type="button"
+      [color]="color"
+      size="small"
+      [rounded]="true"
+      [border]="true"
+      (click)="close()"
+    >
+      {{ closeButtonText }}
+    </button>
+  </div>
+</nighthawk-dropdown>

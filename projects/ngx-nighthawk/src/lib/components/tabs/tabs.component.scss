@@ -1,0 +1,11 @@
+.tabs-header {
+  margin: var(--tabs-header-margin);
+}
+
+.tab-content {
+  &:not(.no-style) {
+    background: var(--tabs-content-background-color);
+    padding: var(--tabs-content-padding);
+    border-radius: var(--tabs-content-border-radius);
+  }
+}

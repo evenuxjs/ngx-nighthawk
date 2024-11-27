@@ -1,0 +1,111 @@
+<div class="dialog-wrapper">
+  <div class="dialog-content">
+    <h5 class="mb-3">Select date(s)</h5>
+
+    <div class="row gx-2 mb-3">
+      <div class="col">
+        <button
+          nighthawk-button
+          type="button"
+          [color]="method === 'date' ? 'primary' : 'dark'"
+          [rounded]="true"
+          [border]="true"
+          size="small"
+          class="w-100"
+          (click)="method = 'date'"
+        >
+          Select a date
+        </button>
+      </div>
+      <div class="col">
+        <button
+          nighthawk-button
+          type="button"
+          [color]="method === 'range' ? 'primary' : 'dark'"
+          [rounded]="true"
+          [border]="true"
+          size="small"
+          class="w-100"
+          (click)="method = 'range'"
+        >
+          Select a range
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-5">
+      @if (method === 'date') {
+      <label class="d-block mb-2"> Select a date </label>
+      <nighthawk-date-selector
+        color="primary"
+        [rounded]="true"
+        [border]="true"
+        [fullWidth]="true"
+        [(ngModel)]="selectedDate"
+        [yearOptions]="years"
+      />
+      } @else {
+      <label class="d-block mb-2"> Select a start date </label>
+      <nighthawk-date-selector
+        color="primary"
+        [rounded]="true"
+        [border]="true"
+        [fullWidth]="true"
+        class="d-block mb-3"
+        [(ngModel)]="startDate"
+        [yearOptions]="years"
+      />
+
+      <label class="d-block mb-2"> Select an end date </label>
+      <nighthawk-date-selector
+        color="primary"
+        [rounded]="true"
+        [border]="true"
+        [fullWidth]="true"
+        [(ngModel)]="endDate"
+        [yearOptions]="years"
+      />
+      }
+    </div>
+
+    <div class="row">
+      <div class="col-auto">
+        <button
+          nighthawk-button
+          type="button"
+          color="primary"
+          [rounded]="true"
+          [border]="true"
+          (click)="clear()"
+        >
+          Clear
+        </button>
+      </div>
+
+      <div class="col text-end">
+        <button
+          nighthawk-button
+          type="button"
+          class="me-2"
+          color="dark"
+          [rounded]="true"
+          [border]="true"
+          (click)="dialogRef.close(false)"
+        >
+          Close
+        </button>
+
+        <button
+          nighthawk-button
+          type="button"
+          color="primary"
+          [rounded]="true"
+          [border]="true"
+          (click)="submit()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

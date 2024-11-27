@@ -1,0 +1,281 @@
+:root {
+  :root {
+    // -------------------------------------------------- GENERAL //
+
+    // General
+    --font-family: "JetBrains Mono", monospace;
+    --font-size: 13px;
+    --minimum-page-loading-time: 2000;
+    --minimum-route-switch-loading-time: 3000;
+    --loader-background: var(--background-color);
+    --loader-color: var(--primary-color);
+    --background-color: #171821;
+    --text-color: #afafaf;
+    --background-image: initial;
+
+    // Breakpoints
+    --mobile-max-width: 576px;
+    --desktop-max-width: 1320px;
+    --container-padding: 14px;
+
+    // Colors
+    --primary-color: #fcb859;
+    --secondary-color: #ff935c;
+    --dark-color: #000000;
+    --light-color: #ffffff;
+
+    // Scrollbar
+    --scrollbar-width: 14px;
+    --scrollbar-track-color: var(--background-color);
+    --scrollbar-thumb-color: var(--primary-color);
+
+    // -------------------------------------------------- BUTTONS //
+
+    // General
+    --button-border-width: 1px;
+    --button-border-radius: 8px;
+    --lg-button-x-padding: 36px;
+    --lg-button-y-padding: 20px;
+    --md-button-x-padding: 24px;
+    --md-button-y-padding: 16px;
+    --sm-button-x-padding: 12px;
+    --sm-button-y-padding: 8px;
+
+    // Text
+    --transparent-button-text-color: var(--primary-color);
+    --primary-button-text-color: var(--dark-color);
+    --secondary-button-text-color: var(--dark-color);
+    --dark-button-text-color: var(--light-color);
+    --light-button-text-color: var(--dark-color);
+
+    // Hover event
+    --transparent-button-background-event-color: transparent;
+    --primary-button-background-event-color: #ffb691;
+    --secondary-button-background-event-color: #ffad83;
+    --dark-button-background-event-color: #1c1c1c;
+    --light-button-background-event-color: #ffbfbf;
+
+    // Border color
+    --transparent-button-border-color: #fcb8597d;
+    --primary-button-border-color: var(--dark-color);
+    --secondary-button-border-color: var(--dark-color);
+    --dark-button-border-color: var(--dark-color);
+    --light-button-border-color: var(--light-color);
+
+    // -------------------------------------------------- FORM CONTROL //
+
+    // General
+    --form-control-border-width: 1px;
+    --form-control-border-radius: 8px;
+    --lg-form-control-x-padding: 20px;
+    --lg-form-control-y-padding: 18px;
+    --md-form-control-x-padding: 16px;
+    --md-form-control-y-padding: 14px;
+    --sm-form-control-x-padding: 12px;
+    --sm-form-control-y-padding: 6px;
+
+    // Text
+    --transparent-form-control-text-color: var(--light-color);
+    --primary-form-control-text-color: var(--dark-color);
+    --secondary-form-control-text-color: var(--dark-color);
+    --dark-form-control-text-color: var(--light-color);
+    --light-form-control-text-color: var(--dark-color);
+
+    // Placeholders
+    --transparent-form-control-placeholder-color: var(--light-color);
+    --primary-form-control-placeholder-color: var(--dark-color);
+    --secondary-form-control-placeholder-color: var(--dark-color);
+    --dark-form-control-placeholder-color: var(--light-color);
+    --light-form-control-placeholder-color: var(--dark-color);
+
+    // Background
+    --transparent-form-control-background-color: transparent;
+    --primary-form-control-background-color: var(--primary-color);
+    --secondary-form-control-background-color: var(--secondary-color);
+    --dark-form-control-background-color: var(--dark-color);
+    --light-form-control-background-color: var(--light-color);
+
+    // Hover/ focus event
+    --transparent-form-control-background-event-color: transparent;
+    --primary-form-control-background-event-color: var(--primary-color);
+    --secondary-form-control-background-event-color: var(--secondary-color);
+    --dark-form-control-background-event-color: var(--dark-color);
+    --light-form-control-background-event-color: var(--light-color);
+
+    // Border color
+    --transparent-form-control-border-color: #fcb8597d;
+    --primary-form-control-border-color: var(--dark-color);
+    --secondary-form-control-border-color: var(--dark-color);
+    --dark-form-control-border-color: var(--dark-color);
+    --light-form-control-border-color: var(--dark-color);
+
+    // -------------------------------------------------- CHECKBOX //
+
+    --checkbox-background-color: var(--background-color);
+    --checkbox-checked-background-color: var(--primary-color);
+    --checkbox-checkmark-color: var(--dark-color);
+    --checkbox-border-color: var(--primary-color);
+
+    // -------------------------------------------------- RADIOS //
+
+    --radio-background-color: var(--background-color);
+    --radio-inset-background-color: var(--background-color);
+    --radio-inner-background-color: var(--primary-color);
+    --radio-border-color: var(--primary-color);
+
+    // -------------------------------------------------- SELECT //
+
+    --dropdown-options-background-color: var(--background-color);
+    --dropdown-options-text-color: var(--text-color);
+    --dropdown-options-padding: 6px 0;
+    --dropdown-options-list-item-padding: 14px;
+    --dropdown-options-hover-background-color: var(--highlight-color);
+    --dropdown-options-hover-text-color: var(--light-color);
+    --dropdown-options-border-color: #fcb8597d;
+    --dropdown-options-scrollbar-width: 2px;
+
+    // -------------------------------------------------- DROPDOWN //
+
+    --dropdown-background-color: var(--highlight-color);
+    --dropdown-border-color: var(--dark-color);
+    --dropdown-border-width: 1px;
+    --dropdown-border-radius: 14px;
+
+    // -------------------------------------------------- DIALOG //
+
+    --dialog-shadow-color: #00000026;
+    --dialog-background-color: var(--highlight-color);
+    --dialog-border-color: var(--dark-color);
+    --dialog-margin-top: 14vh;
+    --dialog-border-radius: 8px;
+
+    // -------------------------------------------------- RANGE SLIDER //
+
+    --range-slider-main-color: var(--primary-color);
+    --range-slider-value-active-color: var(--background-color);
+    --range-slider-progress-background: var(--background-color);
+    --range-slider-thumb-color: var(--primary-color);
+    --range-slider-ticks-color: var(--primary-color);
+
+    // -------------------------------------------------- RANGE PICKER //
+
+    --range-picker-main-color: var(--primary-color);
+    --range-picker-value-active-color: var(--background-color);
+    --range-picker-progress-background: var(--background-color);
+    --range-picker-thumb-color: var(--primary-color);
+    --range-picker-ticks-color: var(--primary-color);
+
+    // -------------------------------------------------- CALENDAR //
+
+    --calendar-header-background-color: var(--primary-color);
+    --calendar-header-text-color: var(--dark-color);
+    --calendar-day-item-border-color: var(--dark-color);
+    --calendar-day-item-background-color: var(--background-color);
+    --calendary-day-item-hover-background-color: var(--highlight-color);
+    --calendar-day-item-number-text-color: var(--primary-color);
+    --calendar-day-item-hover-number-text-color: var(--primary-color);
+
+    // -------------------------------------------------- CALENDAR //
+
+    --swiper-navigation-sides-offset: 12px;
+    --swiper-navgiation-sides-color: var(--light-color);
+    --swiper-navigation-sides-font-size: 21px;
+    --swiper-pagination-bullet: #45464d;
+    --swiper-pagination-bullet-active: #ffffff;
+
+    // -------------------------------------------------- HIGHLIGHT //
+
+    --code-highlight-background-color: var(--background-color);
+    --code-highlight-border-radius: 8px;
+    --code-highlight-text-color: var(--light-color);
+
+    // -------------------------------------------------- SELECTED TEXT //
+
+    --selected-text-color: var(--dark-color);
+    --selected-text-background-color: var(--primary-color);
+
+    // -------------------------------------------------- TOOLTIP //
+
+    --tooltip-background-color: var(--light-color);
+    --tooltip-text-color: var(--dark-color);
+    --tooltip-border-radius: 4px;
+    --tooltip-padding: 8px 16px;
+
+    // -------------------------------------------------- TEXT EDITOR //
+
+    --text-editor-min-height: 400px;
+    --text-editor-border-color: #5b5b5b;
+    --text-editor-toolbar-buttons-color: var(--text-color);
+    --text-editor-toolbar-active-color: var(--primary-color);
+    --text-editor-video-width: 60%;
+
+    // -------------------------------------------------- QUANTITY SELECTOR //
+
+    --quantity-selector-button-background-color: var(--primary-color);
+    --quantity-selector-input-background-color: var(--background-color);
+    --quantity-selector-border-color: var(--primary-color);
+    --quantity-selector-button-text-color: var(--dark-color);
+    --quantity-selector-input-text-color: var(--light-color);
+    --quantity-selector-border-radius: 8px;
+
+    // -------------------------------------------------- LIGHTBOX //
+
+    --lightbox-backdrop-background-color: var(--dark-color);
+    --lightbox-backdrop-navigation-button-background-color: #00000073;
+    --lightbox-backdrop-navigation-button-color: var(--light-color);
+    --lightbox-backdrop-button-color: var(--light-color);
+    --lightbox-backdrop-button-hover-color: var(--light-color);
+
+    // -------------------------------------------------- TABLE //
+
+    --table-header-color: var(--primary-color);
+    --table-search-text-color: var(--primary-color);
+    --table-clear-search-button-color: var(--primary-color);
+    --table-background-color: var(--background-color);
+    --table-border-stripes: 1px solid var(--highlight-color);
+    --table-border: none;
+    --table-border-radius: 8px;
+    --table-cell-padding: 14px;
+
+    --table-mobile-filters-header-background-color: var(--highlight-color);
+    --table-mobile-filters-header-border: none;
+    --table-mobile-filters-header-padding: 14px;
+    --table-mobile-filters-header-margin: 0 0 14px 0;
+    --table-mobile-filters-header-border-radius: 8px;
+
+    --table-mobile-filters-body-background-color: var(--highlight-color);
+    --table-mobile-filters-body-border: none;
+    --table-mobile-filters-body-padding: 14px;
+    --table-mobile-filters-body-margin: 0 0 14px 0;
+    --table-mobile-filters-body-border-radius: 8px;
+
+    --table-mobile-row-background-color: var(--highlight-color);
+    --table-mobile-row-border: none;
+    --table-mobile-row-margin: 0 0 14px 0;
+    --table-mobile-row-border-radius: 8px;
+
+    --table-footer-background-color: var(--background-color);
+    --table-footer-border: none;
+    --table-footer-margin: 0 0 14px 0;
+    --table-footer-padding: 14px;
+    --table-footer-border-radius: 8px;
+
+    // -------------------------------------------------- TABS //
+
+    --tabs-header-margin: 0 0 14px 0;
+    --tabs-content-background-color: var(--background-color);
+    --tabs-content-padding: 12px;
+    --tabs-navigation-border-radius: 12px;
+    --tabs-content-border-radius: 12px;
+    --tabs-content-text-color: var(--light-color);
+    --tabs-content-border-color: var(--primary-color);
+
+    // -------------------------------------------------- PAGINATION //
+
+    --pagination-button-text-color: var(--text-color);
+    --pagination-button-selected-background-color: var(--background-color);
+    --pagination-button-selected-text-color: var(--primary-color);
+    --pagination-button-border-radius: 8px;
+    --pagination-button-text-size: 13px;
+  }
+}

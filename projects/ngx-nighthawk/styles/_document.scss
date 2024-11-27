@@ -1,0 +1,91 @@
+html,
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+body {
+  background-color: var(--background-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  color: var(--text-color);
+
+  &.loading {
+    pointer-events: none;
+  }
+}
+
+body::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color);
+  border-radius: 3px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+  border-radius: 3px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body {
+    scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbary-track-color);
+  }
+}
+
+main {
+  display: block;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  pointer-events: all;
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+
+  &.is-loaded {
+    opacity: 1;
+  }
+
+  &.disable-interact {
+    pointer-events: none;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+::-moz-selection {
+  color: var(--selected-text-color);
+  background: var(--selected-text-background-color);
+}
+
+::selection {
+  color: var(--selected-text-color);
+  background: var(--selected-text-background-color);
+}
+
+.hljs {
+  background-color: var(--code-highlight-background-color);
+  border-radius: var(--code-highlight-border-radius);
+  color: var(--code-highlight-text-color);
+}
+
+.hljs-ln-numbers {
+  padding-right: 14px !important;
+}
+
+.selectable,
+pre,
+code {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+.hidden {
+  visibility: hidden;
+}

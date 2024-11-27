@@ -1,0 +1,194 @@
+quill-editor {
+  width: 100%;
+}
+
+.ql-editor {
+  min-height: var(--text-editor-min-height);
+
+  &.ql-blank {
+    &::before {
+      color: var(--text-editor-toolbar-buttons-color);
+      font-style: initial;
+    }
+  }
+}
+
+.ql-toolbar {
+  background-color: var(--background-color);
+  margin-bottom: 14px;
+
+  &.ql-snow {
+    border: 1px solid var(--text-editor-border-color);
+    border-radius: 8px;
+
+    .ql-stroke {
+      stroke: var(--text-editor-toolbar-buttons-color);
+    }
+
+    .ql-fill {
+      fill: var(--text-editor-toolbar-buttons-color);
+    }
+
+    .ql-picker {
+      color: var(--text-editor-toolbar-buttons-color);
+
+      &.ql-expanded {
+        .ql-picker-label {
+          border-color: var(--text-editor-border-color);
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+        }
+
+        .ql-picker-options {
+          border-color: var(--text-editor-border-color);
+        }
+      }
+    }
+
+    .ql-picker-label {
+      color: var(--text-editor-toolbar-buttons-color);
+      display: flex;
+
+      &:hover {
+        color: var(--text-editor-toolbar-active-color);
+
+        .ql-stroke {
+          stroke: var(--text-editor-toolbar-active-color);
+        }
+      }
+    }
+
+    .ql-picker-options {
+      background-color: var(--background-color);
+
+      .ql-picker-item {
+        color: var(--text-editor-toolbar-buttons-color);
+        padding: 0;
+
+        &:hover {
+          color: var(--text-editor-toolbar-active-color);
+        }
+
+        &.ql-selected {
+          color: var(--text-editor-toolbar-active-color);
+        }
+      }
+    }
+  }
+}
+
+.ql-snow.ql-toolbar button:hover,
+.ql-snow .ql-toolbar button:hover,
+.ql-snow.ql-toolbar button:focus,
+.ql-snow .ql-toolbar button:focus,
+.ql-snow.ql-toolbar button.ql-active,
+.ql-snow .ql-toolbar button.ql-active,
+.ql-snow.ql-toolbar .ql-picker-label:hover,
+.ql-snow .ql-toolbar .ql-picker-label:hover,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker-item:hover,
+.ql-snow .ql-toolbar .ql-picker-item:hover,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+  color: var(--text-editor-toolbar-active-color);
+}
+
+.ql-snow.ql-toolbar button:hover .ql-stroke,
+.ql-snow .ql-toolbar button:hover .ql-stroke,
+.ql-snow.ql-toolbar button:focus .ql-stroke,
+.ql-snow .ql-toolbar button:focus .ql-stroke,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke,
+.ql-snow .ql-toolbar button.ql-active .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+.ql-snow.ql-toolbar button:hover .ql-stroke-miter,
+.ql-snow .ql-toolbar button:hover .ql-stroke-miter,
+.ql-snow.ql-toolbar button:focus .ql-stroke-miter,
+.ql-snow .ql-toolbar button:focus .ql-stroke-miter,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke-miter,
+.ql-snow .ql-toolbar button.ql-active .ql-stroke-miter,
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
+  stroke: var(--text-editor-toolbar-active-color);
+}
+
+.ql-snow.ql-toolbar button:hover {
+  .ql-stroke {
+    stroke: var(--text-editor-toolbar-active-color);
+  }
+
+  .ql-fill {
+    fill: var(--text-editor-toolbar-active-color);
+  }
+
+  .ql-picker {
+    color: var(--text-editor-toolbar-active-color);
+  }
+}
+
+.ql-snow .ql-tooltip {
+  background-color: var(--background-color);
+  border: 1px solid var(--dark-color);
+  box-shadow: none;
+  border-radius: 8px;
+  color: var(--text-editor-toolbar-buttons-color);
+  z-index: 222;
+
+  input[type="text"] {
+    border: none;
+  }
+}
+
+.ql-snow .ql-tooltip[data-mode="video"]::before {
+  display: none;
+}
+
+.ql-tooltip {
+  z-index: 222;
+
+  .ql-editing {
+    &::before {
+      display: none;
+    }
+  }
+}
+
+.ql-tooltip.ql-editing {
+  top: 0px !important;
+  left: calc(50% - (242px / 2)) !important;
+}
+
+.ql-snow a {
+  color: var(--text-editor-toolbar-active-color);
+}
+
+.ql-container {
+  background-color: var(--background-color);
+
+  &.ql-snow {
+    border-top: 1px solid var(--text-editor-border-color) !important;
+    border: 1px solid var(--text-editor-border-color);
+    border-radius: 8px;
+    min-height: var(--text-editor-min-height);
+  }
+}
+
+.ql-editor .ql-video {
+  display: block;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  width: var(--text-editor-video-width);
+}

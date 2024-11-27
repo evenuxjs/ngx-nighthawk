@@ -1,0 +1,17 @@
+<div
+  class="range-slider"
+  [class.range-slider-large]="size === 'large'"
+  [class.range-slider-medium]="size === 'medium'"
+  [class.range-slider-small]="size === 'small'"
+  [style.--min]="min"
+  [style.--max]="max"
+  [style.--step]="ticks ? tickCount : 0"
+  [style.--value]="value"
+  [style.--text-value]="textValue"
+>
+  <input type="range" [min]="min" [max]="max" [step]="step" [value]="value" (input)="updateRangeValue($event)" />
+  @if (label) {
+    <output>{{ textValue }}</output>
+  }
+  <div class="range-slider__progress"></div>
+</div>

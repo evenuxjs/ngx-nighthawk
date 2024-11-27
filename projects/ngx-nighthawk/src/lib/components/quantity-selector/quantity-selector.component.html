@@ -1,0 +1,16 @@
+<div class="quantity-selector" [ngClass]="size">
+  <button nighthawk-button type="button" (click)="decreaseQuantity()">
+    <i class="fa fa-minus"></i>
+  </button>
+  <input
+    nighthawk-form-control
+    type="number"
+    [border]="false"
+    class="d-inline"
+    [(ngModel)]="quantity"
+    [ngModelOptions]="{ standalone: true }"
+  />
+  <button nighthawk-button type="button" (click)="increaseQuantity()">
+    <i class="fa fa-plus"></i>
+  </button>
+</div>

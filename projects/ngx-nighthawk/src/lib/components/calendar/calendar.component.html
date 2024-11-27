@@ -1,0 +1,20 @@
+<div class="calendar" [class.calendar-small]="size === 'small'">
+  <div class="header">
+    @for (name of dayNames; track name) {
+    <div class="day">{{ name }}</div>
+    }
+  </div>
+  @for (week of weeks; track week) {
+  <div class="weeks">
+    @for (day of week; track day) {
+    <div class="day" [class.disabled]="day.month !== month" (click)="selectDay(day)">
+      @if (day) {
+      <span class="number" [class.light]="day.month !== month">
+        {{ day.month === month ? day.number : '' }}
+      </span>
+      }
+    </div>
+    }
+  </div>
+  }
+</div>

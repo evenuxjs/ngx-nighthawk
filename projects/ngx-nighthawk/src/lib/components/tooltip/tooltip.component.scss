@@ -1,0 +1,10 @@
+:host {
+  display: block;
+}
+
+div {
+  background-color: var(--tooltip-background-color);
+  color: var(--tooltip-text-color);
+  border-radius: var(--tooltip-border-radius);
+  padding: var(--tooltip-padding);
+}

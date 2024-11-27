@@ -1,0 +1,254 @@
+@if (isBrowser) {
+<div class="d-lg-none">
+  <div class="filters-header">
+    <p>{{ language.showFilters }}</p>
+    <div (click)="displayFilters = !displayFilters">
+      {{ displayFilters ? language.collapse : language.expand }}
+      <i
+        class="fa"
+        [class.fa-caret-down]="!displayFilters"
+        [class.fa-caret-up]="displayFilters"
+      ></i>
+    </div>
+  </div>
+  @if (displayFilters) {
+  <div class="filters-body">
+    <div class="mb-2">
+      <p class="mb-1">{{ language.sortByField }}</p>
+      <nighthawk-select
+        color="primary"
+        size="small"
+        [border]="true"
+        [rounded]="true"
+        [options]="sortByOptions"
+        nameField="name"
+        valueField="field"
+        [(ngModel)]="sortByValue"
+      />
+    </div>
+
+    <div class="mb-2">
+      <p class="mb-1">{{ language.sortByDirection }}</p>
+      <nighthawk-select
+        color="primary"
+        size="small"
+        [border]="true"
+        [rounded]="true"
+        [options]="sortDirectionOptions"
+        nameField="name"
+        valueField="direction"
+        [(ngModel)]="sortDirectionValue"
+      />
+    </div>
+
+    <div class="mb-2">
+      <p class="mb-1">{{ language.searchField }}</p>
+      <nighthawk-select
+        color="primary"
+        size="small"
+        [border]="true"
+        [rounded]="true"
+        [options]="searchFieldOptions"
+        nameField="name"
+        valueField="field"
+        [(ngModel)]="searchFieldValue"
+      />
+    </div>
+
+    <div class="mb-2">
+      <p class="mb-1">{{ language.searchValue }}</p>
+      <input
+        nighthawk-form-control
+        type="text"
+        color="primary"
+        size="small"
+        [border]="true"
+        [rounded]="true"
+        [(ngModel)]="searchTermValue"
+      />
+    </div>
+
+    <button
+      nighthawk-button
+      type="button"
+      color="primary"
+      size="small"
+      [border]="true"
+      [rounded]="true"
+      class="me-2"
+      (click)="submitFilters()"
+    >
+      {{ language.submit }}
+    </button>
+
+    <button
+      nighthawk-button
+      type="button"
+      color="dark"
+      size="small"
+      [border]="true"
+      [rounded]="true"
+      (click)="clearFilters()"
+    >
+      {{ language.clear }}
+    </button>
+  </div>
+  }
+</div>
+
+<div class="table-container" [style.max-height.px]="maxTableHeight">
+  <table cdk-table [dataSource]="data">
+    <ng-container
+      *ngFor="let fieldEntry of config.fields; let i = index"
+      [cdkColumnDef]="fieldEntry.headerDefinition || ''"
+    >
+      <th cdk-header-cell *cdkHeaderCellDef>
+        <ng-container *ngIf="fieldEntry.sortEnabled; else noSort">
+          <nighthawk-table-sort
+            [currentField]="fieldEntry.name"
+            [config]="config"
+            (onSortChange)="onSortChange($event)"
+          >
+            <div class="d-inline mr-2">
+              <ng-container *ngTemplateOutlet="headers()[i]" />
+            </div>
+          </nighthawk-table-sort>
+        </ng-container>
+        <ng-template #noSort>
+          <ng-container *ngTemplateOutlet="headers()[i]" />
+        </ng-template>
+      </th>
+    </ng-container>
+
+    <ng-container
+      *ngFor="let fieldEntry of config.fields; let i = index"
+      [cdkColumnDef]="fieldEntry.header2Definition || ''"
+    >
+      <th cdk-header-cell *cdkHeaderCellDef>
+        @if (fieldEntry.searchEnabled) { @if (fieldEntry.searchType === 'text'
+        || fieldEntry.searchType === 'number') {
+        <div class="row align-items-center gx-2">
+          <div class="col">
+            <input
+              nighthawk-form-control
+              type="{{ fieldEntry.searchType }}"
+              placeholder="Search..."
+              class="search-input d-block w-100"
+              color="primary"
+              size="small"
+              [rounded]="true"
+              [border]="true"
+              [(ngModel)]="fieldEntry.searchValue"
+              (input)="onSearchField($event, fieldEntry.name)"
+              #searchInput
+            />
+          </div>
+          <div class="col-auto">
+            @if (config.searchQueryParams[fieldEntry.name]) {
+            <button
+              nighthawk-button
+              type="button"
+              color="primary"
+              size="small"
+              [rounded]="true"
+              [border]="true"
+              (click)="clearSearchForField(fieldEntry.name)"
+            >
+              <i class="fa fa-times"></i>
+            </button>
+            }
+          </div>
+        </div>
+        } @else if (fieldEntry.searchType === 'date') {
+        <div class="row align-items-center gx-2">
+          <div class="col">
+            <input
+              nighthawk-form-control
+              type="text"
+              placeholder="Date(s)..."
+              class="search-input d-block w-100"
+              color="primary"
+              size="small"
+              [rounded]="true"
+              [border]="true"
+              [(ngModel)]="fieldEntry.searchValue"
+              (input)="onSearchField($event, fieldEntry.name)"
+              #searchInput
+            />
+          </div>
+          <div class="col-auto">
+            <button
+              nighthawk-button
+              type="button"
+              color="primary"
+              size="small"
+              [rounded]="true"
+              [border]="true"
+              (click)="openDateSelectDialog(fieldEntry.name)"
+            >
+              <i class="fa fa-calendar-times-o"></i>
+            </button>
+          </div>
+        </div>
+        }}
+      </th>
+    </ng-container>
+
+    <tr cdk-header-row *cdkHeaderRowDef="headerCellDefinitions"></tr>
+    <tr cdk-header-row *cdkHeaderRowDef="header2CellDefinitions"></tr>
+
+    <ng-container
+      *ngFor="let fieldEntry of config.fields; let i = index"
+      [cdkColumnDef]="fieldEntry.bodyDefinition || ''"
+    >
+      <td
+        cdk-cell
+        *cdkCellDef="let row"
+        [attr.data-label]="headerLabels[i]"
+        [style.width]="fieldEntry.width"
+      >
+        <ng-container *ngTemplateOutlet="cells()[i]; context: { row }" />
+      </td>
+    </ng-container>
+
+    <tr cdk-row *cdkRowDef="let row; columns: cellBodyDefinitions"></tr>
+  </table>
+</div>
+}
+
+<div class="table-footer">
+  <div class="row align-items-center">
+    @if (showPerPage) {
+    <div class="col-auto d-none d-lg-inline">
+      {{ language.perPage }}:
+      <nighthawk-select
+        [options]="perPageOptions"
+        nameField="name"
+        valueField="value"
+        [(ngModel)]="config.perPage"
+        (ngModelChange)="fetchData()"
+        color="transparent"
+        size="small"
+        [rounded]="true"
+        [border]="true"
+        class="d-inline-block"
+        style="width: 70px"
+      />
+    </div>
+    } @if (showTotal) {
+    <div class="col-auto d-none d-lg-inline">
+      {{ language.total }}: <span class="total-number">{{ config.total }}</span>
+    </div>
+    }
+
+    <div class="col">
+      <nighthawk-pagination
+        class="d-flex justify-content-center justify-content-lg-end"
+        [currentPage]="config.page"
+        [itemsPerPage]="config.perPage"
+        [totalItems]="config.total || 0"
+        (pageChange)="onSelectPage($event)"
+      />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" data-inject-url="https://www.svgbackgrounds.com/svg/preloaders/tube-spinner.svg" loading="lazy">
+   <radialGradient id="a--inject-12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)">
+      <stop class="loader-svg-stop-color" offset="0" stop-color="#808"></stop>
+      <stop class="loader-svg-stop-color" offset=".3" stop-color="#808" stop-opacity=".9"></stop>
+      <stop class="loader-svg-stop-color" offset=".6" stop-color="#808" stop-opacity=".6"></stop>
+      <stop class="loader-svg-stop-color" offset=".8" stop-color="#808" stop-opacity=".3"></stop>
+      <stop class="loader-svg-stop-color" offset="1" stop-color="#808" stop-opacity="0"></stop>
+   </radialGradient>
+   <circle transform-origin="center" fill="none" stroke="url(#a--inject-12)" stroke-width="18" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70">      
+   <animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform>
+   </circle>
+   <circle class="loader-svg-stroke" transform-origin="center" fill="none" opacity=".2" stroke="#808" stroke-width="18" stroke-linecap="round" cx="100" cy="100" r="70"></circle>
+</svg>

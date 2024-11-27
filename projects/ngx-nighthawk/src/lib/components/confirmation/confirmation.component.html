@@ -1,0 +1,17 @@
+<div class="dialog-wrapper">
+  <div class="dialog-content">
+    <h5 class="mb-3">{{ data.title || "Confirmation" }}</h5>
+    <p class="mb-5">{{ data.text }}</p>
+    <div class="footer">
+      <button nighthawk-button type="button" class="me-2" color="primary" [rounded]="true" [border]="true"
+        (click)="dialogRef.close(false)">
+        {{ data.cancelText }}
+      </button>
+
+      <button nighthawk-button type="button" color="primary" [rounded]="true" [border]="true"
+        (click)="dialogRef.close(true)">
+        {{ data.submitText }}
+      </button>
+    </div>
+  </div>
+</div>

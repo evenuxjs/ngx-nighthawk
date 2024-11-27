@@ -1,0 +1,10 @@
+<label class="checkbox" [class.checkbox-default]="['default', 'rounded'].includes(type)"
+  [class.checkbox-rounded]="type === 'rounded'" [class.checkbox-switch]="type === 'switch'"
+  [class.checkbox-large]="size === 'large'" [class.checkbox-medium]="size === 'medium'"
+  [class.checkbox-small]="size === 'small'">
+  <input type="checkbox" [(ngModel)]="checked" (ngModelChange)="onStateToggle()" />
+  <div class="checkbox-checkmark"></div>
+  <div class="checkbox-label">
+    <ng-content></ng-content>
+  </div>
+</label>

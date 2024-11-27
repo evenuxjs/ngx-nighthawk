@@ -1,0 +1,33 @@
+.pagination,
+.page-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0px;
+}
+
+.btn-nav,
+.btn-page {
+  border-radius: var(--pagination-button-border-radius);
+  cursor: pointer;
+  text-align: center;
+  color: var(--pagination-button-text-color);
+  font-size: var(--pagination-button-text-size);
+}
+
+.btn-nav {
+  padding: 0 8px;
+  width: 42px;
+  height: 42px;
+}
+
+.btn-page {
+  border: none;
+  height: 36px;
+  padding: 0 14px;
+}
+
+.btn-selected {
+  background-color: var(--pagination-button-selected-background-color);
+  color: var(--pagination-button-selected-text-color);
+}

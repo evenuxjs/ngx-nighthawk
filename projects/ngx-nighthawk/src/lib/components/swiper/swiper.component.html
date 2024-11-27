@@ -1,0 +1,18 @@
+<div class="swiper" [ngClass]="identifier">
+  <div class="swiper-wrapper">
+    <ng-content></ng-content>
+  </div>
+
+  @if (config?.pagination?.enabled) {
+    <div class="swiper-pagination"></div>
+  }
+
+  @if (config?.scrollbar?.enabled) {
+    <div class="swiper-scrollbar"></div>
+  }
+</div>
+
+@if (config?.navigation?.enabled) {
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+}

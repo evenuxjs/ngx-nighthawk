@@ -1,0 +1,29 @@
+@import "swiper/css/bundle";
+
+:root {
+  --swiper-navigation-sides-offset: -36px;
+}
+
+.swiper-slide {
+  cursor: -webkit-grab;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  color: var(--swiper-navgiation-sides-color);
+  font-size: var(--swiper-navigation-sides-font-size);
+}
+
+.swiper-pagination-bullet {
+  background-color: var(--swiper-pagination-bullet) !important;
+  opacity: 1 !important;
+
+  &.swiper-pagination-bullet-active {
+    background-color: var(--swiper-pagination-bullet-active) !important;
+  }
+}

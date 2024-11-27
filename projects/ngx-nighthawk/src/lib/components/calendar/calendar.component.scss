@@ -1,0 +1,92 @@
+.calendar {
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--calendar-header-background-color);
+    padding: 18px 0;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    color: var(--calendar-header-text-color);
+    font-weight: bolder;
+  }
+
+  .weeks {
+    display: flex;
+    flex-wrap: wrap;
+
+    .day {
+      flex: 1;
+      max-width: calc(14.2857% - 10px);
+      margin: 10px;
+      box-sizing: border-box;
+      text-align: center;
+      border: 1px solid var(--calendar-day-item-border-color);
+      font-size: 13px;
+      font-weight: bolder;
+      cursor: pointer;
+      background-color: var(--calendar-day-item-background-color);
+      border-radius: 12px;
+      color: var(--text-color);
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:not(.disabled):hover {
+        background-color: var(--calendary-day-item-hover-background-color);
+      }
+
+      &:hover .number {
+        color: var(--calendar-day-item-hover-number-text-color) !important;
+      }
+
+      .number {
+        font-size: 60px;
+        font-weight: normal;
+        color: var(--calendar-day-item-number-text-color);
+        aspect-ratio: 16 / 9;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.light {
+          opacity: 0.33;
+        }
+      }
+    }
+  }
+}
+
+.calendar-small {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+
+  .header {
+    line-height: 4px !important;
+    margin-bottom: 2px !important;
+    margin-left: 2px !important;
+    margin-right: 2px !important;
+    padding: 12px 0 !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+  }
+
+  .day {
+    max-width: calc(100% / 7) !important;
+    border-radius: 8px !important;
+    margin: 2px !important;
+
+    .number {
+      font-size: 13px !important;
+    }
+  }
+}

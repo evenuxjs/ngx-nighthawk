@@ -1,0 +1,25 @@
+<div
+  class="range-picker"
+  data-ticks-position="bottom"
+  [class.range-picker-large]="size === 'large'"
+  [class.range-picker-medium]="size === 'medium'"
+  [class.range-picker-small]="size === 'small'"
+  [style.--min]="min"
+  [style.--max]="max"
+  [style.--step]="ticks ? tickCount : 0"
+  [style.--value-a]="valueA"
+  [style.--value-b]="valueB"
+  [style.--text-value-a]="textValueA"
+  [style.--text-value-b]="textValueB"
+  [style.--suffix]="suffix"
+>
+  <input type="range" [min]="min" [max]="max" [value]="this.valueA" (input)="updateRangeValueA($event)" />
+  @if (label) {
+    <output>{{ textValueA }}</output>
+  }
+  <input type="range" [min]="min" [max]="max" [value]="this.valueB" (input)="updateRangeValueB($event)" />
+  @if (label) {
+    <output>{{ textValueB }}</output>
+  }
+  <div class="range-picker__progress"></div>
+</div>

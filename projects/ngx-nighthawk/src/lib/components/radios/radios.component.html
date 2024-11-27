@@ -1,0 +1,23 @@
+@for (option of options; track option; let idx = $index) {
+<div
+  class="radio"
+  [class.radio-large]="size === 'large'"
+  [class.radio-medium]="size === 'medium'"
+  [class.radio-small]="size === 'small'"
+>
+  <input
+    id="radio-{{ identifier + ' ' + idx }}"
+    name="{{ identifier }}"
+    type="radio"
+    [value]="option.value"
+    [disabled]="option.disabled || disabled"
+    [(ngModel)]="selectedValue"
+    (ngModelChange)="onStateChange()"
+  />
+  @if (option.label) {
+  <label for="radio-{{ identifier + ' ' + idx }}" class="radio-label">{{
+    option.label
+  }}</label>
+  }
+</div>
+}

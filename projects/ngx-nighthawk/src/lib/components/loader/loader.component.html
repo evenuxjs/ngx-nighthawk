@@ -1,0 +1,24 @@
+@if (render) {
+<div [class.bg]="isPageLoader" [class.transparent]="isPageLoaderFinished">
+  <span
+    class="loader"
+    [class.page-loader-edition]="isPageLoader"
+    [class.loader-hidden]="isHidden"
+    [style.width.px]="width || size"
+    [style.height.px]="height || size"
+    [style.top]="isPageLoader ? 'calc(50% - ' + (height || size) / 2 + ')' : ''"
+    [style.left]="isPageLoader ? 'calc(50% - ' + (width || size) / 2 + ')' : ''"
+  >
+    <nighthawk-svg
+      ngSkipHydration
+      [src]="
+        isPageLoader
+          ? customPageLoaderImagePath || './images/' + pageLoaderType + '.svg'
+          : customLoaderImagePath || './images/' + type + '.svg'
+      "
+      [style.width.px]="width || size"
+      [style.height.px]="height || size"
+    />
+  </span>
+</div>
+}

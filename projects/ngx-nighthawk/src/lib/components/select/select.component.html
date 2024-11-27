@@ -1,0 +1,56 @@
+<div cdkOverlayOrigin #trigger #origin="cdkOverlayOrigin">
+  <div
+    class="input-wrapper"
+    [ngClass]="size + ' ' + color"
+    [class.expanded]="showingOptions"
+  >
+    <input
+      nighthawk-form-control
+      [color]="color"
+      [size]="size"
+      [rounded]="rounded"
+      [border]="border"
+      [disabled]="isDisabled"
+      [placeholder]="
+        hasSearch
+          ? showingOptions
+            ? searchPlaceholder
+            : placeholder || ''
+          : placeholder
+      "
+      [(ngModel)]="selectedValue"
+      (input)="onSearch($event)"
+      (focus)="showOptions()"
+      (blur)="onBlur()"
+      (keydown.enter)="selectOption()"
+    />
+    <i class="fa fa-caret-down"></i>
+    <div
+      class="click-overlay"
+      [class.is-disabled]="isDisabled"
+      [class.has-search]="hasSearch"
+      (click)="toggleDropdown()"
+    ></div>
+  </div>
+</div>
+
+<ng-template
+  cdkConnectedOverlay
+  cdkConnectedOverlayHasBackdrop
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayWidth]="parentWidth"
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="showingOptions"
+  (backdropClick)="hideOptions(true)"
+>
+  <div class="dropdown-options" @dropdownAnimation>
+    <ng-container *ngFor="let option of filteredOptions; let i = index">
+      <a (click)="selectOption(i)" [class.disabled]="option.disabled">
+        {{ option[nameField] }}
+      </a>
+    </ng-container>
+    <p *ngIf="!filteredOptions || !filteredOptions.length">
+      {{ emptyResultsLabel }}
+    </p>
+  </div>
+</ng-template>
