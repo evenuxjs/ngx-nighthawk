@@ -19,10 +19,13 @@
     "@angular/platform-browser": "^19.0.0",
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
+    "moment-timezone": "^0.5.46",
+    "ngx-highlightjs": "^12.0.0",
     "ngx-quill": "^27.0.0",
     "query-string": "^9.1.1",
     "quill": "^2.0.2",
     "rxjs": "^7.8.0 || ^8.0.0",
+    "swiper": "^11.1.15",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
