@@ -1,6 +1,6 @@
 <a href="https://nighthawk.evenux.com">
 <div align="center">
-    <img class="mx-auto center-block d-block" src="https://nighthawk.evenux.com/images/logo-small.png" alt="ngx-nighthawk-test-v2" />
+    <img class="mx-auto center-block d-block" src="https://nighthawk.evenux.com/images/logo-small.png" alt="ngx-nighthawk" />
 </div>
 </a>
 
@@ -23,22 +23,22 @@
 
 ## Getting Started
 
-ngx-nighthawk-test-v2 is a custom Angular library, that includes a few different packages, that the library is built on.
+ngx-nighthawk is a custom Angular library, that includes a few different packages, that the library is built on.
 
 Check our [Getting started guide](https://nighthawk.evenux.com/quick-start) if it's your first project with Angular Nighthawk Dekit.
 
 ## Supporting
 
-ngx-nighthawk-test-v2 is an Open Source (MIT Licensed) project, it's an independent project with ongoing development made possible thanks to the support of our awesome backers.
+ngx-nighthawk is an Open Source (MIT Licensed) project, it's an independent project with ongoing development made possible thanks to the support of our awesome backers.
 If you also would like to show support or simply give back to Open Source community, please consider donating for our cause via PayPal: [PayPal.com/HenrikWesterholm](https://paypal.me/henrikwesterholm)
 
 ### How to build lib for development
 
 ```bash
-git clone https://github.com/evenuxjs/ngx-nighthawk-test-v2
-cd ngx-nighthawk-test-v2
+git clone https://github.com/evenuxjs/ngx-nighthawk
+cd ngx-nighthawk
 npm ci
-ng build ngx-nighthawk-test-v2
+ng build ngx-nighthawk
 cd dist/ngx-nighthawp
 npm pack
 ```
@@ -53,7 +53,7 @@ The project is written by the EVENUX organization, lead by [Henrik Westerholm](h
 
 ### License
 
-[MIT](https://github.com/evenuxjs/ngx-nighthawk-test-v2/blob/main/LICENSE)
+[MIT](https://github.com/evenuxjs/ngx-nighthawk/blob/main/LICENSE)
 
 ### Hire us
 
