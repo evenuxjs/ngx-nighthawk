@@ -169,3 +169,23 @@
     color: var(--primary-color);
   }
 }
+
+.draggable {
+  cursor: move;
+}
+
+.cdk-drag-preview {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  background-color: var(--highlight-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.cdk-drag-placeholder {
+  display: table-row;
+  background-color: var(--primary-color);
+  opacity: 0.5;
+}

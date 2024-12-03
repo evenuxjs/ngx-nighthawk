@@ -12,6 +12,11 @@ import {
   AfterContentInit,
 } from '@angular/core';
 import { CdkTableModule } from '@angular/cdk/table';
+import {
+  CdkDragDrop,
+  DragDropModule,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 import { NighthawkTableSortComponent } from '../../../internal/table-sort/table-sort.component';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, take } from 'rxjs/operators';
@@ -36,6 +41,7 @@ import { NighthawkBootstrapService } from '../../services/bootstrap.service';
     CommonModule,
     FormsModule,
     CdkTableModule,
+    DragDropModule,
     NighthawkTableSortComponent,
     NighthawkSelectComponent,
     NighthawkFormControlDirective,
@@ -73,6 +79,12 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
 
   @Input() showTotal: boolean = true;
 
+  @Input() filtersEnabled: boolean = true;
+
+  @Input() footerEnabled: boolean = true;
+
+  @Input() allowReorder: boolean = false;
+
   @Input() maxTableHeight: number = 740;
 
   @Input() language = {
@@ -108,6 +120,7 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
     currentSortField: string;
     currentSortDirection: 'asc' | 'desc' | '';
     searchQueryParams: any;
+    data: any[];
   }>();
 
   readonly headers = contentChildren<TemplateRef<any>>('header', {
@@ -206,6 +219,7 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
         currentSortField: this.config.currentSortDirection,
         currentSortDirection: this.config.currentSortDirection,
         searchQueryParams: this.config.searchQueryParams,
+        data: this.data,
       });
 
       // Reset desktop filters
@@ -257,6 +271,11 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
       this.sortByOptions.push(option);
       this.searchFieldOptions.push(option);
     });
+  }
+
+  public onDrop(event: CdkDragDrop<any[]>): void {
+    moveItemInArray(this.data, event.previousIndex, event.currentIndex);
+    this.data = [...this.data];
   }
 
   public submitFilters(): void {
@@ -418,6 +437,13 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
             this.data = response.data;
             this.config.total = response.total ?? this.config.total;
             this.cellBodyDefinitions = copyOfCellDefinitions;
+
+            this.onQueryData.emit({
+              currentSortField: this.config.currentSortDirection,
+              currentSortDirection: this.config.currentSortDirection,
+              searchQueryParams: this.config.searchQueryParams,
+              data: this.data,
+            });
           }
         });
     }

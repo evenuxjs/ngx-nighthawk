@@ -1,4 +1,4 @@
-@if (isBrowser) {
+@if (isBrowser) { @if (filtersEnabled) {
 <div class="d-lg-none">
   <div class="filters-header">
     <p>{{ language.showFilters }}</p>
@@ -95,8 +95,14 @@
   </div>
   }
 </div>
+}
 
-<div class="table-container" [style.max-height.px]="maxTableHeight">
+<div
+  class="table-container"
+  [style.max-height.px]="maxTableHeight"
+  cdkDropList
+  (cdkDropListDropped)="onDrop($event)"
+>
   <table cdk-table [dataSource]="data">
     <ng-container
       *ngFor="let fieldEntry of config.fields; let i = index"
@@ -120,6 +126,7 @@
       </th>
     </ng-container>
 
+    @if (filtersEnabled) {
     <ng-container
       *ngFor="let fieldEntry of config.fields; let i = index"
       [cdkColumnDef]="fieldEntry.header2Definition || ''"
@@ -193,9 +200,13 @@
         }}
       </th>
     </ng-container>
+    }
 
     <tr cdk-header-row *cdkHeaderRowDef="headerCellDefinitions"></tr>
+
+    @if (filtersEnabled) {
     <tr cdk-header-row *cdkHeaderRowDef="header2CellDefinitions"></tr>
+    }
 
     <ng-container
       *ngFor="let fieldEntry of config.fields; let i = index"
@@ -211,11 +222,17 @@
       </td>
     </ng-container>
 
-    <tr cdk-row *cdkRowDef="let row; columns: cellBodyDefinitions"></tr>
+    <tr
+      cdk-row
+      *cdkRowDef="let row; columns: cellBodyDefinitions"
+      cdkDrag
+      [class.draggable]="allowReorder"
+      [cdkDragDisabled]="!allowReorder"
+      [cdkDragData]="row"
+    ></tr>
   </table>
 </div>
-}
-
+} @if (footerEnabled) {
 <div class="table-footer">
   <div class="row align-items-center">
     @if (showPerPage) {
@@ -252,3 +269,4 @@
     </div>
   </div>
 </div>
+}
