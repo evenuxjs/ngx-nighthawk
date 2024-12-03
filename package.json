@@ -49,5 +49,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/evenuxjs/ngx-nighthawk"
-  }
+  },
+  "license": "MIT"
 }
