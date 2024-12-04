@@ -435,7 +435,7 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
         .subscribe((response) => {
           if (this.currentRequestId === requestId) {
             this.data = response.data;
-            this.config.total = response.total ?? this.config.total;
+            this.config.total = response.meta?.total ?? this.config.total;
             this.cellBodyDefinitions = copyOfCellDefinitions;
 
             this.onQueryData.emit({
