@@ -1,9 +1,8 @@
 <button
-  class="main-btn"
   type="button"
   nighthawk-button
   nighthawk-controlled-dropdown-trigger
-  [color]="'transparent'"
+  [color]="color"
   [size]="size"
   [border]="border"
   [rounded]="rounded"
@@ -15,7 +14,6 @@
   [class.justify-content-center]="textAlign === 'center'"
   [class.justify-content-end]="textAlign === 'end'"
   [ngClass]="buttonClasses"
-  class="btn-date-select"
 >
   <span *ngIf="!selectedDate">
     {{ buttonSelectDateText }}

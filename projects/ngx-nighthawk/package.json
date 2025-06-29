@@ -1,22 +1,22 @@
 {
   "name": "ngx-nighthawk",
-  "version": "8.0.0",
+  "version": "8.0.3",
   "peerDependencies": {
-    "@angular/cdk": "^19.0.1",
-    "@angular/common": "^19.0.0",
-    "@angular/core": "^19.0.0",
+    "@angular/cdk": "^20.0.4",
+    "@angular/common": "^20.0.5",
+    "@angular/core": "^20.0.5",
     "font-awesome": "^4.7.0",
     "ngx-highlightjs": "^12.0.0",
-    "ngx-quill": "^27.0.0",
+    "ngx-quill": "^28.0.1",
     "quill": "^2.0.2",
     "swiper": "^11.0.0",
     "validator": "^13.11.0"
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
-    "moment-timezone": "^0.5.45",
+    "luxon": "^3.6.1",
     "ngx-highlightjs": "^12.0.0",
-    "ngx-quill": "^27.0.0",
+    "ngx-quill": "^28.0.1",
     "query-string": "^9.1.1",
     "quill": "^2.0.2",
     "swiper": "^11.0.0",
@@ -25,6 +25,7 @@
   },
   "sideEffects": false,
   "devDependencies": {
+    "@types/luxon": "^3.6.2",
     "@types/validator": "^13.11.9"
   },
   "author": "Henrik Westerholm",

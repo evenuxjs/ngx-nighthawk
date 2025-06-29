@@ -28,7 +28,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import queryString from 'query-string';
 import { FormsModule } from '@angular/forms';
-import moment from 'moment-timezone';
+import { DateTime } from 'luxon';
 import { NighthawkSelectComponent } from '../select/select.component';
 import { NighthawkFormControlDirective } from '../../directives/form-control.directive';
 import { NighthawkButtonDirective } from '../../directives/button.directive';
@@ -346,23 +346,23 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
 
         const timezone =
           this.nighthawk.config.timezone === 'guess'
-            ? moment.tz.guess()
+            ? DateTime.local().zoneName
             : this.nighthawk.config.timezone;
 
         if (response && response.selectedDate) {
-          const date = moment(response.selectedDate)
-            .tz(timezone)
-            .format('DD.MM.YYYY');
+          const date = DateTime.fromISO(response.selectedDate, {
+            zone: timezone,
+          }).toFormat('dd.MM.yyyy');
 
           dateString = `${date}-${date}`;
         } else if (response && response.startDate && response.endDate) {
-          const start = moment(response.startDate)
-            .tz(timezone)
-            .format('DD.MM.YYYY');
+          const start = DateTime.fromISO(response.startDate, {
+            zone: timezone,
+          }).toFormat('dd.MM.yyyy');
 
-          const end = moment(response.endDate)
-            .tz(timezone)
-            .format('DD.MM.YYYY');
+          const end = DateTime.fromISO(response.endDate, {
+            zone: timezone,
+          }).toFormat('dd.MM.yyyy');
 
           dateString = `${start}-${end}`;
         }

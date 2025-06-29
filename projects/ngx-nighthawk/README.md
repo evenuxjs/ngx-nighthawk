@@ -4,16 +4,6 @@
 </div>
 </a>
 
-<p align="center">
-<a href="https://join.slack.com/t/evenuxsoftware/shared_invite/zt-2v0bz6g5j-5FzFCtRXBFb0vmBnDPDHfw" target="_blank">
-    <img src="https://nighthawk.evenux.com/images/slack.png" alt="slack" >
-</a>
-<a href="https://discord.gg/fCqg5Xyxfr" target="_blank">
-    <img src="https://nighthawk.evenux.com/images/discord.png" alt="Discord">
-</a>
-
-</p>
-
 ## Links
 
 - [Documentation](https://nighthawk.evenux.com)

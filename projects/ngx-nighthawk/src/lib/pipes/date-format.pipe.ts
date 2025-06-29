@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import moment from 'moment-timezone';
+import { DateTime } from 'luxon';
 import { NighthawkBootstrapService } from '../services/bootstrap.service';
 
 @Pipe({
@@ -11,18 +11,30 @@ export class NighthawkDateFormatPipe implements PipeTransform {
 
   transform(
     value: any,
-    format: string = 'DD.MM.YYYY',
+    format: string = 'dd.MM.yyyy',
     isDatabaseTimezone?: boolean
-  ): any {
+  ): string {
     const timezone =
       this.nighthawk.config.timezone === 'guess'
-        ? moment.tz.guess()
+        ? DateTime.local().zoneName
         : this.nighthawk.config.timezone;
 
-    return moment(value)
-      .tz(
-        isDatabaseTimezone ? this.nighthawk.config.databaseTimezone : timezone
-      )
-      .format(format);
+    const zone = isDatabaseTimezone
+      ? this.nighthawk.config.databaseTimezone
+      : timezone;
+
+    let date: DateTime;
+
+    if (typeof value === 'string') {
+      date = DateTime.fromISO(value, { zone });
+    } else if (typeof value === 'number') {
+      date = DateTime.fromMillis(value, { zone });
+    } else if (value instanceof Date) {
+      date = DateTime.fromJSDate(value, { zone });
+    } else {
+      return '';
+    }
+
+    return date.setZone(zone).toFormat(format);
   }
 }

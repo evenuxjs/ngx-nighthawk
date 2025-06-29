@@ -12,7 +12,7 @@
     "ngx-quill",
     "quill",
     "lightgallery",
-    "moment-timezone",
+    "luxon",
     "query-string"
   ],
   "assets": [

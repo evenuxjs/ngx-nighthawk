@@ -5,13 +5,3 @@
     padding: 2px !important;
   }
 }
-
-.btn-date-select {
-  background-color: var(--date-selector-background-color);
-  color: var(--date-selector-text-color);
-  border: var(--date-selector-border);
-
-  &:hover {
-    background-color: var(--date-selector-background-event-color);
-  }
-}
