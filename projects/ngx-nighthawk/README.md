@@ -15,7 +15,7 @@
 
 ngx-nighthawk is a custom Angular library, that includes a few different packages, that the library is built on.
 
-Check our [Getting started guide](https://nighthawk.evenux.com/quick-start) if it's your first project with Angular Nighthawk Dekit.
+Check our [Getting started guide](https://nighthawk.evenux.com/quick-start) if it's your first project with Angular Nighthawk Devkit.
 
 ## Supporting
 

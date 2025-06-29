@@ -40,7 +40,7 @@ export class NighthawkTooltipDirective implements OnInit, OnDestroy {
   @HostListener("mouseenter")
   show() {
     const tooltipRef: ComponentRef<NighthawkTooltipComponent> = this.overlayRef.attach(new ComponentPortal(NighthawkTooltipComponent));
-    tooltipRef.instance.text = this.text;
+    tooltipRef.instance.text = this.nighthawkTooltip;
   }
 
   @HostListener("mouseout")
