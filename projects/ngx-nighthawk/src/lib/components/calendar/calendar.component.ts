@@ -1,4 +1,11 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, output } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  output,
+} from '@angular/core';
 
 @Component({
   standalone: true,
@@ -8,7 +15,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, output } from '@ang
 })
 export class NighthawkCalendarComponent implements OnInit, OnChanges {
   @Input() month: number = 0;
-  @Input() year: number = 2024;
+  @Input() year: number = new Date().getUTCFullYear();
   @Input() size: 'large' | 'small' = 'small';
   @Input() startDayOfWeek: number = 1; // Default to Monday (0 is Sunday, 1 is Monday, and so on)
   @Input() dayNames: string[] = [
@@ -24,7 +31,7 @@ export class NighthawkCalendarComponent implements OnInit, OnChanges {
     day: number;
     month: number;
     year: number;
-}>();
+  }>();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public weeks: any[][] = [];

@@ -18,8 +18,13 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { NighthawkTableSortComponent } from '../../../internal/table-sort/table-sort.component';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, take } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  take,
+} from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import queryString from 'query-string';
 import { FormsModule } from '@angular/forms';
@@ -161,6 +166,7 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
 
   private searchSubject = new Subject<{ field: string; value: string }>();
   private currentRequestId: number = 0;
+  private initialRequest: boolean = true;
 
   constructor(
     @Inject(PLATFORM_ID) private platformid: object,
@@ -192,8 +198,12 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
       )
       .subscribe(({ field, value }) => {
         const currentPath = this.router.url.split('?')[0];
+        const updatedParams = {
+          ...this.config.searchQueryParams,
+          [field]: value,
+        };
         this.router.navigate([currentPath], {
-          queryParams: { [field]: value, page: 1 },
+          queryParams: { ...updatedParams, page: 1 },
           queryParamsHandling: 'merge',
         });
       });
@@ -201,52 +211,35 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
     this.activatedRoute.queryParams.subscribe((queryParams) => {
       const { page, limit, sort, direction, ...filters } = queryParams;
 
-      // Set table config values
+      // Merge filters into the existing searchQueryParams
+      this.config.searchQueryParams = {
+        ...this.config.searchQueryParams,
+        ...filters,
+      };
+
+      // Update other config parameters
       this.config.page = page || this.config.page || 1;
       this.config.perPage = limit || this.config.perPage || 10;
-      this.config.currentSortField = sort;
-      this.config.currentSortDirection = direction;
+      this.config.currentSortField = sort || this.config.currentSortField;
+      this.config.currentSortDirection =
+        direction || this.config.currentSortDirection;
 
-      // Set mobile filter values
-      this.sortByValue = sort;
-      this.sortDirectionValue = direction;
+      // Update mobile filter values
+      this.sortByValue = sort || this.config.currentSortField;
+      this.sortDirectionValue = direction || this.config.currentSortDirection;
       this.searchFieldValue = Object.keys(filters)[0] || '';
-      this.searchTermValue = filters[0] || '';
+      this.searchTermValue = filters[Object.keys(filters)[0]] || '';
 
       // Emit changes
       this.onTableChange.emit(this.config);
       this.onQueryData.emit({
-        currentSortField: this.config.currentSortDirection,
+        currentSortField: this.config.currentSortField,
         currentSortDirection: this.config.currentSortDirection,
         searchQueryParams: this.config.searchQueryParams,
         data: this.data,
       });
 
-      // Reset desktop filters
-      this.config.searchQueryParams = {};
-
-      // Reset input values
-      for (const field of this.config.fields) {
-        field.searchValue = '';
-      }
-
-      // Assign selected desktop filters
-      let i = 0;
-      for (const field of Object.keys(filters)) {
-        if (filters[field]) {
-          this.config.searchQueryParams[field] = filters[field];
-
-          const configFieldRef = this.config.fields.find(
-            (f) => f.name === field
-          );
-
-          if (configFieldRef) {
-            configFieldRef.searchValue = filters[field];
-          }
-          i++;
-        }
-      }
-
+      // Fetch updated data
       this.fetchData();
     });
   }
@@ -393,6 +386,7 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
     const currentPath = this.router.url.split('?')[0];
     this.router.navigate([currentPath], {
       queryParams: {
+        ...this.config.searchQueryParams,
         sort: sortData.sortField,
         direction: sortData.sortDirection,
       },
@@ -431,19 +425,40 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
 
       this.http
         .get<any>(`${this.fetchUrl}?${query}`)
-        .pipe(take(1))
+        .pipe(
+          take(1),
+          catchError(() => {
+            this.data = [];
+            return of([]);
+          })
+        )
         .subscribe((response) => {
           if (this.currentRequestId === requestId) {
-            this.data = response.data;
-            this.config.total = response.meta?.total ?? this.config.total;
-            this.cellBodyDefinitions = copyOfCellDefinitions;
+            if (response.data) {
+              this.data = [...response.data];
+              this.config.total = response.meta?.total ?? this.config.total;
+              this.cellBodyDefinitions = copyOfCellDefinitions;
 
-            this.onQueryData.emit({
-              currentSortField: this.config.currentSortDirection,
-              currentSortDirection: this.config.currentSortDirection,
-              searchQueryParams: this.config.searchQueryParams,
-              data: this.data,
-            });
+              this.onQueryData.emit({
+                currentSortField: this.config.currentSortField,
+                currentSortDirection: this.config.currentSortDirection,
+                searchQueryParams: this.config.searchQueryParams,
+                data: this.data,
+              });
+            } else {
+              this.data = [];
+              this.config.total = 0;
+              this.cellBodyDefinitions = copyOfCellDefinitions;
+
+              this.onQueryData.emit({
+                currentSortField: this.config.currentSortField,
+                currentSortDirection: this.config.currentSortDirection,
+                searchQueryParams: this.config.searchQueryParams,
+                data: this.data,
+              });
+            }
+
+            this.initialRequest = false;
           }
         });
     }

@@ -28,7 +28,8 @@ export class NighthawkDateSelectDialogComponent {
     @Inject(DIALOG_DATA) public data: any,
     public dialogRef: DialogRef<any>
   ) {
-    for (let i = 2024; i > 1943; i--) {
+    const currentYear = new Date().getUTCFullYear();
+    for (let i = currentYear; i > 1943; i--) {
       this.years.push({ name: '' + i, value: i });
     }
 

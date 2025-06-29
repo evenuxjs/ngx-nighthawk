@@ -11,6 +11,10 @@ quill-editor {
       font-style: initial;
     }
   }
+
+  * {
+    all: revert !important;
+  }
 }
 
 .ql-toolbar {

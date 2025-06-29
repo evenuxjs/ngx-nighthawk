@@ -1,9 +1,4 @@
-import {
-  Component,
-  Input,
-  forwardRef,
-  output
-} from '@angular/core';
+import { Component, Input, forwardRef, output } from '@angular/core';
 import {
   ControlValueAccessor,
   FormsModule,
@@ -26,6 +21,7 @@ import {
 })
 export class NighthawkCheckboxComponent implements ControlValueAccessor {
   @Input() checked: boolean = false;
+  @Input() isEnabled: boolean = true;
   @Input() type: 'default' | 'rounded' | 'switch' = 'default';
   @Input() size: 'large' | 'medium' | 'small' = 'medium';
 
@@ -49,8 +45,10 @@ export class NighthawkCheckboxComponent implements ControlValueAccessor {
   }
 
   public onStateToggle(): void {
-    this.onStateChange.emit(this.checked);
-    this.onModelChange(this.checked);
-    this.onTouched();
+    if (this.isEnabled) {
+      this.onStateChange.emit(this.checked);
+      this.onModelChange(this.checked);
+      this.onTouched();
+    }
   }
 }

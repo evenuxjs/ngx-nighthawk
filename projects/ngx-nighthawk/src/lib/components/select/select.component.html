@@ -45,7 +45,7 @@
 >
   <div class="dropdown-options" @dropdownAnimation>
     <ng-container *ngFor="let option of filteredOptions; let i = index">
-      <a (click)="selectOption(i)" [class.disabled]="option.disabled">
+      <a (click)="selectOption(i)" [class.disabled]="option?.disabled || false">
         {{ option[nameField] }}
       </a>
     </ng-container>

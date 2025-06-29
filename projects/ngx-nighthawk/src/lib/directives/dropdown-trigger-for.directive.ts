@@ -9,6 +9,8 @@ import {
   OnInit,
   Inject,
   PLATFORM_ID,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { Overlay, OverlayConfig } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
@@ -25,6 +27,7 @@ export class NighthawkDropdownTriggerForDirective implements OnInit, OnDestroy {
   private overlayRef!: any;
   private leaveTimeout!: any;
   private isBrowser: boolean = false;
+  private _isOpen: boolean = false;
 
   @Input() public dropdownTrigger!: DropdownPanel;
   @Input() public direction: 'start' | 'center' | 'end' = 'end';
@@ -36,12 +39,15 @@ export class NighthawkDropdownTriggerForDirective implements OnInit, OnDestroy {
   @Input() public dropdownPanelClass: string = '';
   @Input() public disabled: boolean = false;
 
+  @Output() isOpenChange = new EventEmitter<boolean>();
+  @Output() public dropdownClosed: EventEmitter<void> =
+    new EventEmitter<void>();
+
   constructor(
     private elementRef: ElementRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private readonly router: Router,
-    // eslint-disable-next-line @typescript-eslint/ban-types
     @Inject(PLATFORM_ID) private readonly platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -53,20 +59,9 @@ export class NighthawkDropdownTriggerForDirective implements OnInit, OnDestroy {
     }
 
     if (!this.overlayRef) {
-      const overlayConfig = this.getOverlayConfig();
-      this.overlayRef = this.overlay.create(overlayConfig);
-      const templatePortal = new TemplatePortal(
-        this.dropdownTrigger.templateRef,
-        this.viewContainerRef
-      );
-      this.overlayRef.attach(templatePortal);
-
-      setTimeout(() => {
-        this.overlayRef.overlayElement.classList.add('visible');
-      });
+      this.openDropdown();
     } else {
-      this.overlayRef.detach();
-      this.overlayRef = null;
+      this.closeDropdown();
     }
   }
 
@@ -76,28 +71,7 @@ export class NighthawkDropdownTriggerForDirective implements OnInit, OnDestroy {
     }
 
     if (this.dropdownOnHover && !this.overlayRef) {
-      const overlayConfig = this.getOverlayConfig();
-      this.overlayRef = this.overlay.create(overlayConfig);
-      const templatePortal = new TemplatePortal(
-        this.dropdownTrigger.templateRef,
-        this.viewContainerRef
-      );
-
-      this.overlayRef.attach(templatePortal);
-
-      setTimeout(() => {
-        this.overlayRef.overlayElement.classList.add('visible');
-      });
-
-      fromEvent<MouseEvent>(
-        this.overlayRef.overlayElement,
-        'mouseleave'
-      ).subscribe(() => {
-        this.leaveTimeout = setTimeout(() => {
-          this.overlayRef.detach();
-          this.overlayRef = null;
-        }, this.dropdownHideDelay);
-      });
+      this.openDropdown();
     } else {
       clearTimeout(this.leaveTimeout);
     }
@@ -106,8 +80,7 @@ export class NighthawkDropdownTriggerForDirective implements OnInit, OnDestroy {
   @HostListener('mouseleave') onMouseLeave() {
     if (this.isBrowser && this.dropdownOnHover && this.overlayRef) {
       this.leaveTimeout = setTimeout(() => {
-        this.overlayRef.detach();
-        this.overlayRef = null;
+        this.closeDropdown();
       }, this.dropdownHideDelay);
     }
   }
@@ -124,6 +97,26 @@ export class NighthawkDropdownTriggerForDirective implements OnInit, OnDestroy {
     }
   }
 
+  @Input()
+  set isOpen(value: boolean) {
+    if (value !== this._isOpen) {
+      this._isOpen = value;
+      this.isOpenChange.emit(this._isOpen);
+
+      if (this.isBrowser) {
+        if (value) {
+          this.openDropdown();
+        } else {
+          this.closeDropdown();
+        }
+      }
+    }
+  }
+
+  get isOpen(): boolean {
+    return this._isOpen;
+  }
+
   public ngOnInit(): void {
     this.router.events.subscribe((event) => {
       if (
@@ -132,8 +125,7 @@ export class NighthawkDropdownTriggerForDirective implements OnInit, OnDestroy {
         this.dropdownCloseOnRouteChange &&
         event instanceof NavigationStart
       ) {
-        this.overlayRef.detach();
-        this.overlayRef = null;
+        this.closeDropdown();
       }
     });
 
@@ -146,8 +138,7 @@ export class NighthawkDropdownTriggerForDirective implements OnInit, OnDestroy {
           ) {
             if (!this.overlayRef.overlayElement.contains(event.target)) {
               setTimeout(() => {
-                this.overlayRef.detach();
-                this.overlayRef = null;
+                this.closeDropdown();
               }, this.dropdownHideDelay);
             }
           }
@@ -162,12 +153,41 @@ export class NighthawkDropdownTriggerForDirective implements OnInit, OnDestroy {
             this.isCursorInsideDropdown(event)
           ) {
             setTimeout(() => {
-              this.overlayRef.detach();
-              this.overlayRef = null;
+              this.closeDropdown();
             }, this.dropdownHideDelay);
           }
         }
       );
+    }
+  }
+
+  private openDropdown(): void {
+    if (this.overlayRef) return;
+
+    const overlayConfig = this.getOverlayConfig();
+    this.overlayRef = this.overlay.create(overlayConfig);
+    const templatePortal = new TemplatePortal(
+      this.dropdownTrigger.templateRef,
+      this.viewContainerRef
+    );
+    this.overlayRef.attach(templatePortal);
+
+    setTimeout(() => {
+      this.overlayRef.overlayElement.classList.add('visible');
+    });
+
+    this._isOpen = true;
+    this.isOpenChange.emit(true);
+  }
+
+  private closeDropdown(): void {
+    if (this.overlayRef) {
+      this.overlayRef.detach();
+      this.overlayRef = null;
+
+      this._isOpen = false;
+      this.isOpenChange.emit(false);
+      this.dropdownClosed.emit();
     }
   }
 
@@ -202,14 +222,12 @@ export class NighthawkDropdownTriggerForDirective implements OnInit, OnDestroy {
         },
       ]);
 
-    const overlayConfig = new OverlayConfig({
+    return new OverlayConfig({
       panelClass: this.dropdownPanelClass,
       hasBackdrop: false,
       positionStrategy,
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
     });
-
-    return overlayConfig;
   }
 
   ngOnDestroy() {

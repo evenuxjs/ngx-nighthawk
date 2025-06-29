@@ -33,6 +33,8 @@ export class NighthawkSwiperComponent implements AfterViewInit, OnChanges {
     },
     navigation: {
       enabled: false,
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
     },
     scrollbar: {
       enabled: false,

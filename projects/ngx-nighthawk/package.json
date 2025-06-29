@@ -1,8 +1,8 @@
 {
   "name": "ngx-nighthawk",
-  "version": "7.0.21",
+  "version": "8.0.0",
   "peerDependencies": {
-    "@angular/cdk": "^19.0.0",
+    "@angular/cdk": "^19.0.1",
     "@angular/common": "^19.0.0",
     "@angular/core": "^19.0.0",
     "font-awesome": "^4.7.0",

@@ -1,5 +1,15 @@
-import { Component, Input, forwardRef, output } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  Component,
+  Input,
+  forwardRef,
+  Output,
+  EventEmitter,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { NighthawkButtonDirective } from '../../directives/button.directive';
 import { NighthawkFormControlDirective } from '../../directives/form-control.directive';
 import { CommonModule } from '@angular/common';
@@ -9,7 +19,12 @@ import { CommonModule } from '@angular/common';
   selector: 'nighthawk-quantity-selector',
   templateUrl: './quantity-selector.component.html',
   styleUrls: ['./quantity-selector.component.scss'],
-  imports: [CommonModule, FormsModule, NighthawkButtonDirective, NighthawkFormControlDirective],
+  imports: [
+    CommonModule,
+    FormsModule,
+    NighthawkButtonDirective,
+    NighthawkFormControlDirective,
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -18,41 +33,78 @@ import { CommonModule } from '@angular/common';
     },
   ],
 })
-export class NighthawkQuantitySelectorComponent implements ControlValueAccessor {
+export class NighthawkQuantitySelectorComponent
+  implements ControlValueAccessor
+{
   @Input() size: 'large' | 'medium' | 'small' = 'medium';
-  readonly onQuantityChange = output<number>();
+  @Input() maxQuantity: number = 99999;
+  @Output() onQuantityChange = new EventEmitter<number>();
 
   public quantity: number = 1;
+  public maxLength: number = 5;
 
-  private onChange = (quantity: number) => {};
-  private onTouched = () => {};
+  private onChange: (quantity: number) => void = () => {};
+  private onTouched: () => void = () => {};
+
+  constructor() {
+    this.maxLength = Math.abs(this.maxQuantity).toString().length;
+  }
+
+  public ngOnChanges() {
+    this.maxLength = Math.abs(this.maxQuantity).toString().length;
+  }
 
   public decreaseQuantity(): void {
     if (this.quantity > 1) {
       this.quantity--;
       this.onChange(this.quantity);
       this.onTouched();
+      this.onQuantityChange.emit(this.quantity);
     }
   }
 
   public increaseQuantity(): void {
-    if (this.quantity < 99999) {
+    if (this.quantity < this.maxQuantity) {
       this.quantity++;
       this.onChange(this.quantity);
       this.onTouched();
+      this.onQuantityChange.emit(this.quantity);
     }
   }
 
-  writeValue(quantity: number): void {
+  public writeValue(quantity: number): void {
     this.quantity = quantity || 1;
-    this.onQuantityChange.emit(this.quantity || 1);
   }
 
-  registerOnChange(fn: any): void {
+  public registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  public registerOnTouched(fn: any): void {
     this.onTouched = fn;
+  }
+
+  public updateQuantity(newValue: number): void {
+    if (newValue < 0) {
+      this.quantity = 1;
+    } else if (newValue > this.maxQuantity) {
+      this.quantity = this.maxQuantity;
+    } else {
+      this.quantity = newValue;
+    }
+
+    this.onChange(this.quantity);
+    this.onQuantityChange.emit(this.quantity);
+  }
+
+  public validate(evt: any): void {
+    var theEvent = evt || window.event;
+    var key = theEvent.keyCode || theEvent.which;
+    key = String.fromCharCode(key);
+    var regex = /[0-9]|\./;
+    if (!regex.test(key)) {
+      theEvent.returnValue = false;
+      if (theEvent.preventDefault) theEvent.preventDefault();
+    }
   }
 }

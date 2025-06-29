@@ -11,7 +11,7 @@ import {
   Inject,
   PLATFORM_ID,
   viewChild,
-  output
+  output,
 } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
@@ -228,22 +228,24 @@ export class NighthawkSelectComponent
       option = this.filteredOptions[index];
     }
 
-    if (option.disabled) {
+    if (option?.disabled) {
       return;
     }
 
     this.selectedOption = option;
-    this.selectedValue = option[this.nameField];
+    if (option) {
+      this.selectedValue = option[this.nameField];
 
-    setTimeout(() => {
-      this.onModelChange(option[this.valueField]);
-      this.onOptionSelect.emit(option[this.valueField]);
-      this.filterOptions('');
-    });
+      setTimeout(() => {
+        this.onModelChange(option[this.valueField]);
+        this.onOptionSelect.emit(option[this.valueField]);
+        this.filterOptions('');
+      });
 
-    this.ignoreClose = false;
-    this.hideOptions();
-    this.onTouched();
+      this.ignoreClose = false;
+      this.hideOptions();
+      this.onTouched();
+    }
   }
 
   private selectMatchingOption(searchString: string): void {

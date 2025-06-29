@@ -17,7 +17,6 @@ export class NighthawkLightboxService {
 
   constructor(private rendererFactory: RendererFactory2) {
     this.renderer = this.rendererFactory.createRenderer(null, null);
-    this.bindKeyboardEvents();
   }
 
   open(images: string[], startIndex: number = 0): void {
@@ -30,32 +29,41 @@ export class NighthawkLightboxService {
   close(): void {
     if (this.lightboxContainer) {
       if (this.swiper) {
-        this.swiper?.destroy();
+        this.swiper.destroy(true, true);
+        this.swiper = null;
       }
       this.renderer.removeChild(document.body, this.lightboxContainer);
       this.lightboxContainer = null;
-      this.escapeListener();
+
+      if (this.escapeListener) {
+        this.escapeListener();
+      }
     }
   }
 
   private createLightbox(): void {
+    const uniqueId = `swiper-${Date.now()}`;
     this.lightboxContainer = this.renderer.createElement('div');
     this.renderer.addClass(this.lightboxContainer, 'lightbox-container');
-    this.renderer.addClass(this.lightboxContainer, 'hidden'); // Initially hide the lightbox
+    this.renderer.addClass(this.lightboxContainer, 'hidden');
 
+    // Create close button
     const closeButton = this.renderer.createElement('button');
     this.renderer.addClass(closeButton, 'lightbox-close');
     this.renderer.listen(closeButton, 'click', () => this.close());
-    this.renderer.appendChild(this.lightboxContainer, closeButton);
     closeButton.innerHTML = '<i class="fa fa-times"></i>';
+    this.renderer.appendChild(this.lightboxContainer, closeButton);
 
+    // Create spinner
     const spinner = this.renderer.createElement('div');
     this.renderer.addClass(spinner, 'spinner');
     spinner.innerHTML = '<i class="fa fa-circle-o-notch fa-spin"></i>';
     this.renderer.appendChild(this.lightboxContainer, spinner);
 
+    // Create Swiper container
     const swiperWrapper = this.renderer.createElement('div');
     this.renderer.addClass(swiperWrapper, 'swiper');
+    this.renderer.setAttribute(swiperWrapper, 'id', uniqueId);
 
     const swiperWrapperInner = this.renderer.createElement('div');
     this.renderer.addClass(swiperWrapperInner, 'swiper-wrapper');
@@ -86,8 +94,8 @@ export class NighthawkLightboxService {
         loadedImagesCount++;
         if (loadedImagesCount === this.images.length) {
           this.renderer.removeChild(this.lightboxContainer, spinner);
-          this.renderer.removeClass(this.lightboxContainer, 'hidden'); // Show after images are loaded
-          this.initializeSwiper();
+          this.renderer.removeClass(this.lightboxContainer, 'hidden');
+          this.initializeSwiper(`#${uniqueId}`);
         }
       });
 
@@ -98,28 +106,46 @@ export class NighthawkLightboxService {
 
     this.renderer.appendChild(swiperWrapper, swiperWrapperInner);
 
+    // Add navigation buttons
     const prevButton = this.renderer.createElement('div');
     this.renderer.addClass(prevButton, 'swiper-button-prev');
-    this.renderer.listen(prevButton, 'click', () => this.swiper?.slidePrev());
+    prevButton.setAttribute('id', `${uniqueId}-prev`);
     this.renderer.appendChild(swiperWrapper, prevButton);
 
     const nextButton = this.renderer.createElement('div');
     this.renderer.addClass(nextButton, 'swiper-button-next');
-    this.renderer.listen(nextButton, 'click', () => this.swiper?.slideNext());
+    nextButton.setAttribute('id', `${uniqueId}-next`);
     this.renderer.appendChild(swiperWrapper, nextButton);
 
     this.renderer.appendChild(this.lightboxContainer, swiperWrapper);
     this.renderer.appendChild(document.body, this.lightboxContainer);
   }
 
-  private initializeSwiper(): void {
-    this.swiper = new Swiper('.swiper', {
+  private initializeSwiper(selector: string): void {
+    if (this.swiper) {
+      this.swiper.destroy(true, true);
+    }
+
+    const container = document.querySelector(selector) as HTMLElement;
+    const nextButton = container?.querySelector(
+      '.swiper-button-next'
+    ) as HTMLElement;
+    const prevButton = container?.querySelector(
+      '.swiper-button-prev'
+    ) as HTMLElement;
+
+    this.swiper = new Swiper(selector, {
       initialSlide: this.currentIndex,
       zoom: true,
+      speed: 300,
       navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+        nextEl: nextButton,
+        prevEl: prevButton,
       },
+    });
+
+    this.swiper.on('slideChange', () => {
+      this.currentIndex = this.swiper?.activeIndex || 0;
     });
   }
 

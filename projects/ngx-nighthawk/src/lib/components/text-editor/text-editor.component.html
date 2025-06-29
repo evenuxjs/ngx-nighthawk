@@ -1,1 +1,7 @@
-<quill-editor [modules]="config" [(ngModel)]="content" (ngModelChange)="onStateChange()"></quill-editor>
+<quill-editor
+  [modules]="config"
+  [(ngModel)]="content"
+  (ngModelChange)="onStateChange()"
+  [disabled]="isDisabled"
+  [placeholder]="''"
+></quill-editor>

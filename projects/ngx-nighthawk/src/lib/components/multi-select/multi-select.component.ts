@@ -11,7 +11,7 @@ import {
   Inject,
   PLATFORM_ID,
   viewChild,
-  output
+  output,
 } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
@@ -125,36 +125,36 @@ export class NighthawkMultiSelectComponent
       });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.filteredOptions = JSON.parse(JSON.stringify(this.options));
     this.updateDisplayValue();
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.measureParentWidth();
   }
 
-  ngOnChanges(): void {
+  public ngOnChanges(): void {
     this.filteredOptions = JSON.parse(JSON.stringify(this.options));
     this.updateSelectedOptions();
     this.updateDisplayValue();
   }
 
-  writeValue(value: any[]): void {
+  public writeValue(value: any[]): void {
     this.selectedValue = value || [];
     this.updateSelectedOptions();
     this.updateDisplayValue();
   }
 
-  registerOnChange(fn: (value: unknown) => void): void {
+  public registerOnChange(fn: (value: unknown) => void): void {
     this.onModelChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  public registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
-  toggleDropdown(): void {
+  public toggleDropdown(): void {
     if (!this.isDisabled) {
       this.showingOptions = !this.showingOptions;
       if (this.showingOptions) {
@@ -163,53 +163,63 @@ export class NighthawkMultiSelectComponent
     }
   }
 
-  onSearch(event: any): void {
-    const searchString = event.target.value;
+  public onSearch(event: any): void {
+    if (!event || !event.target) return;
+
+    const searchString = event.target.value ?? '';
     this.onSearchValue.emit(searchString);
     this.filterOptions(searchString);
+
     if (!this.showingOptions) {
       this.showOptions();
     }
   }
 
-  showOptions(): void {
+  public showOptions(): void {
     this.showingOptions = true;
     this.measureParentWidth();
   }
 
-  onBlur(): void {
+  public onBlur(): void {
     this.hideOptions();
     this.onTouched();
   }
 
-  hideOptions(force?: boolean): void {
+  public hideOptions(force?: boolean): void {
     if (!this.showingOptions || force) {
       this.showingOptions = false;
       this.onTouched();
     }
   }
 
-  selectOption(option: any = null): void {
+  public selectOption(option: any = null): void {
     if (option) {
       option.selected = !option.selected;
       this.onOptionChange(option);
     }
   }
 
-  onOptionChange(option: any): void {
+  public onOptionChange(option: any): void {
     if (option.selected) {
-      this.selectedOptions.push(option);
+      const alreadySelected = this.selectedOptions.some(
+        (opt) => opt[this.valueField] === option[this.valueField]
+      );
+      if (!alreadySelected) {
+        this.selectedOptions.push(option);
+      }
     } else {
       this.selectedOptions = this.selectedOptions.filter(
-        (opt) => opt !== option
+        (opt) => opt[this.valueField] !== option[this.valueField]
       );
     }
 
     this.selectedValue = this.selectedOptions.map(
       (opt) => opt[this.valueField]
     );
+
     this.onModelChange(this.selectedValue);
     this.onOptionSelect.emit(this.selectedValue);
+
     this.updateDisplayValue();
   }
 
@@ -224,6 +234,12 @@ export class NighthawkMultiSelectComponent
     this.selectedOptions = this.options.filter((option) =>
       this.selectedValue.includes(option[this.valueField])
     );
+
+    this.options.forEach((option) => {
+      option.selected = this.selectedValue.includes(option[this.valueField]);
+    });
+
+    this.filteredOptions = [...this.options];
   }
 
   private updateDisplayValue(): void {
@@ -242,7 +258,7 @@ export class NighthawkMultiSelectComponent
     }
   }
 
-  trackByValue(index: number, item: any): any {
+  public trackByValue(index: number, item: any): any {
     return item[this.valueField];
   }
 }

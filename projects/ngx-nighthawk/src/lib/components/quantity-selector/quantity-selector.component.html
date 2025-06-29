@@ -1,16 +1,30 @@
 <div class="quantity-selector" [ngClass]="size">
-  <button nighthawk-button type="button" (click)="decreaseQuantity()">
+  <button
+    nighthawk-button
+    type="button"
+    (click)="decreaseQuantity()"
+    [disabled]="quantity === 1"
+  >
     <i class="fa fa-minus"></i>
   </button>
   <input
     nighthawk-form-control
-    type="number"
+    type="text"
     [border]="false"
     class="d-inline"
-    [(ngModel)]="quantity"
+    [maxLength]="maxLength"
+    [ngModel]="quantity"
     [ngModelOptions]="{ standalone: true }"
+    (ngModelChange)="updateQuantity($event)"
+    (keypress)="validate($event)"
+    [max]="maxQuantity"
   />
-  <button nighthawk-button type="button" (click)="increaseQuantity()">
+  <button
+    nighthawk-button
+    type="button"
+    (click)="increaseQuantity()"
+    [disabled]="quantity >= maxQuantity"
+  >
     <i class="fa fa-plus"></i>
   </button>
 </div>

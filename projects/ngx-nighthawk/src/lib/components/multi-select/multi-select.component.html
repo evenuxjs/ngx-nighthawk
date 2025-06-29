@@ -1,28 +1,57 @@
 <div cdkOverlayOrigin #trigger #origin="cdkOverlayOrigin">
-  <div class="input-wrapper" [ngClass]="size + ' ' + color" [class.expanded]="showingOptions">
-    <input nighthawk-form-control [color]="color" [size]="size" [rounded]="rounded" [border]="border"
-      [disabled]="isDisabled" [ngModel]="selectedDisplayValue" [controlToCheckForErrors]="controlToCheckForErrors"
+  <div
+    class="input-wrapper"
+    [ngClass]="size + ' ' + color"
+    [class.expanded]="showingOptions"
+  >
+    <input
+      nighthawk-form-control
+      [color]="color"
+      [size]="size"
+      [rounded]="rounded"
+      [border]="border"
+      [disabled]="isDisabled"
+      [ngModel]="selectedDisplayValue"
+      [controlToCheckForErrors]="controlToCheckForErrors"
       [placeholder]="
-             hasSearch
-               ? showingOptions
-                 ? searchPlaceholder
-                 : placeholder || ''
-               : placeholder
-           " (ngModelChange)="onSearch($event)" (input)="onSearch($event)" (focus)="showOptions()" (blur)="onBlur()"
-      (keydown.enter)="selectOption()" />
+        hasSearch
+          ? showingOptions
+            ? searchPlaceholder
+            : placeholder || ''
+          : placeholder
+      "
+      (ngModelChange)="onSearch($event)"
+      (input)="onSearch($event)"
+      (focus)="showOptions()"
+      (blur)="onBlur()"
+      (keydown.enter)="selectOption()"
+    />
     <i class="fa fa-caret-down"></i>
-    <div class="click-overlay" [class.is-disabled]="isDisabled" [class.has-search]="hasSearch"
-      (click)="toggleDropdown()">
-    </div>
+    <div
+      class="click-overlay"
+      [class.is-disabled]="isDisabled"
+      [class.has-search]="hasSearch"
+      (click)="toggleDropdown()"
+    ></div>
   </div>
 </div>
 
-<ng-template cdkConnectedOverlay cdkConnectedOverlayHasBackdrop
-  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop" [cdkConnectedOverlayWidth]="parentWidth"
-  [cdkConnectedOverlayOrigin]="origin" [cdkConnectedOverlayOpen]="showingOptions" (backdropClick)="hideOptions(true)">
+<ng-template
+  cdkConnectedOverlay
+  cdkConnectedOverlayHasBackdrop
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayWidth]="parentWidth"
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="showingOptions"
+  (backdropClick)="hideOptions(true)"
+>
   <div class="dropdown-options" @dropdownAnimation>
-    <nighthawk-checkbox *ngFor="let option of filteredOptions; trackBy: trackByValue" [(ngModel)]="option.selected"
-      (ngModelChange)="onOptionChange(option)" class="px-3 py-1">
+    <nighthawk-checkbox
+      *ngFor="let option of filteredOptions; trackBy: trackByValue"
+      [(ngModel)]="option.selected"
+      (ngModelChange)="onOptionChange(option)"
+      class="px-3 py-1"
+    >
       {{ option[nameField] }}
     </nighthawk-checkbox>
     <p *ngIf="!filteredOptions || !filteredOptions.length">

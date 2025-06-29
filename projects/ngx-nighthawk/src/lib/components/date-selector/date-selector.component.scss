@@ -1,7 +1,17 @@
 ::ng-deep {
-    .dropdown-content { 
-        max-width: 320px !important;
-        width: 100% !important;
-        padding: 2px !important;
-    }
+  .dropdown-content {
+    max-width: 320px !important;
+    width: 100% !important;
+    padding: 2px !important;
+  }
+}
+
+.btn-date-select {
+  background-color: var(--date-selector-background-color);
+  color: var(--date-selector-text-color);
+  border: var(--date-selector-border);
+
+  &:hover {
+    background-color: var(--date-selector-background-event-color);
+  }
 }

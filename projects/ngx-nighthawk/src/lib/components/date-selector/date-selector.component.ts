@@ -50,7 +50,7 @@ export class NighthawkDateSelectorComponent implements ControlValueAccessor {
   @Input() closeButtonText: string = 'Close';
   @Input() selectedDate!: Date;
   @Input() selectedMonth: number = 1;
-  @Input() selectedYear: number = 2024;
+  @Input() selectedYear: number = 2025;
   @Input() monthOptions: any[] = [];
   @Input() yearOptions: any[] = [];
   @Input() closeOnSelectDate: boolean = true;
@@ -85,13 +85,13 @@ export class NighthawkDateSelectorComponent implements ControlValueAccessor {
       { name: 'December', value: 12 },
     ];
 
-    this.yearOptions = [
-      { name: '2020', value: 2020 },
-      { name: '2021', value: 2021 },
-      { name: '2022', value: 2022 },
-      { name: '2023', value: 2023 },
-      { name: '2024', value: 2024 },
-    ];
+    const currentYear = new Date().getUTCFullYear();
+    for (let year = 2020; year <= currentYear; year++) {
+      this.yearOptions.push({
+        name: '' + year,
+        value: year,
+      });
+    }
   }
 
   ngOnInit(): void {
