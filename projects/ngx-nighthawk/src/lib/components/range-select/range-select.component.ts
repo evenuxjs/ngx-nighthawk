@@ -1,22 +1,12 @@
-import {
-  Component,
-  HostListener,
-  Input,
-  forwardRef,
-  output
-} from '@angular/core';
-import {
-  ControlValueAccessor,
-  FormsModule,
-  NG_VALUE_ACCESSOR,
-} from '@angular/forms';
+import { Component, HostListener, Input, forwardRef, output } from "@angular/core";
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 @Component({
   standalone: true,
   imports: [FormsModule],
-  selector: 'nighthawk-range-select',
-  templateUrl: 'range-select.component.html',
-  styleUrls: ['./range-select.component.scss'],
+  selector: "nighthawk-range-select",
+  templateUrl: "range-select.component.html",
+  styleUrls: ["./range-select.component.scss"],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -26,28 +16,27 @@ import {
   ],
 })
 export class NighthawkRangeSelectComponent implements ControlValueAccessor {
-  @HostListener('mousedown')
+  @HostListener("mousedown")
   onMouseDown(): void {
     this.onMouseClick.emit(true);
   }
 
-  @HostListener('mouseup')
+  @HostListener("mouseup")
   onMouseUp(): void {
     this.onMouseClick.emit(false);
   }
 
-  readonly onMouseClick = output<boolean>({ alias: 'onMouseClick' });
+  readonly onMouseClick = output<boolean>();
 
-  @Input() value: number = 0;
-  @Input() size: 'large' | 'medium' | 'small' = 'medium';
-  @Input() min: number = 0;
-  @Input() max: number = 100;
-  @Input() step: number = 1;
-  @Input() tickCount: number = 5;
-  @Input() ticks: boolean = true;
-  @Input() label: boolean = true;
+  @Input() value = 0;
+  @Input() size: "large" | "medium" | "small" = "medium";
+  @Input() min = 0;
+  @Input() max = 100;
+  @Input() step = 1;
+  @Input() tickCount = 5;
+  @Input() ticks = true;
+  @Input() label = true;
 
-  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   readonly onValueChange = output<number>();
 
   public onModelChange: (value: unknown) => void = () => {};
@@ -55,7 +44,7 @@ export class NighthawkRangeSelectComponent implements ControlValueAccessor {
   private onTouched: () => void = () => {};
 
   get textValue(): string {
-    return this.value !== null ? this.value.toString() : '';
+    return this.value !== null ? this.value.toString() : "";
   }
 
   public updateRangeValue(event: Event): void {
@@ -64,7 +53,6 @@ export class NighthawkRangeSelectComponent implements ControlValueAccessor {
     this.onStateChange();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public writeValue(value: number): void {
     this.value = value;
   }

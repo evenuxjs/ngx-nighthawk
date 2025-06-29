@@ -1,11 +1,11 @@
 <div class="dialog-wrapper">
   <div class="dialog-content">
-    <h5 class="mb-3">Select date(s)</h5>
+    <h5 class="mb-3">{{ selectDatesText }}</h5>
 
     <div class="row gx-2 mb-3">
       <div class="col">
         <button
-          nighthawk-button
+          nighthawkButton
           type="button"
           [color]="method === 'date' ? 'primary' : 'dark'"
           [rounded]="true"
@@ -14,12 +14,12 @@
           class="w-100"
           (click)="method = 'date'"
         >
-          Select a date
+          {{ selectADateText }}
         </button>
       </div>
       <div class="col">
         <button
-          nighthawk-button
+          nighthawkButton
           type="button"
           [color]="method === 'range' ? 'primary' : 'dark'"
           [rounded]="true"
@@ -28,82 +28,63 @@
           class="w-100"
           (click)="method = 'range'"
         >
-          Select a range
+          {{ selectARangeText }}
         </button>
       </div>
     </div>
 
-    <div class="mb-5">
-      @if (method === 'date') {
-      <label class="d-block mb-2"> Select a date </label>
-      <nighthawk-date-selector
-        color="primary"
-        [rounded]="true"
-        [border]="true"
-        [fullWidth]="true"
-        [(ngModel)]="selectedDate"
-        [yearOptions]="years"
-      />
-      } @else {
-      <label class="d-block mb-2"> Select a start date </label>
-      <nighthawk-date-selector
-        color="primary"
-        [rounded]="true"
-        [border]="true"
-        [fullWidth]="true"
-        class="d-block mb-3"
-        [(ngModel)]="startDate"
-        [yearOptions]="years"
-      />
-
-      <label class="d-block mb-2"> Select an end date </label>
-      <nighthawk-date-selector
-        color="primary"
-        [rounded]="true"
-        [border]="true"
-        [fullWidth]="true"
-        [(ngModel)]="endDate"
-        [yearOptions]="years"
-      />
-      }
-    </div>
-
-    <div class="row">
-      <div class="col-auto">
-        <button
-          nighthawk-button
-          type="button"
+    <form class="mb-5">
+      @if (method === "date") {
+        <label for="date" class="d-block mb-2"> {{ selectADateText }} </label>
+        <nighthawk-date-selector
+          id="date"
           color="primary"
           [rounded]="true"
           [border]="true"
-          (click)="clear()"
-        >
-          Clear
+          [fullWidth]="true"
+          [(ngModel)]="selectedDate"
+          [yearOptions]="years"
+        />
+      } @else {
+        <label for="startDate" class="d-block mb-2"> {{ selectAStartDateText }} </label>
+        <nighthawk-date-selector
+          id="startDate"
+          color="primary"
+          [rounded]="true"
+          [border]="true"
+          [fullWidth]="true"
+          class="d-block mb-3"
+          [(ngModel)]="startDate"
+          [yearOptions]="years"
+        />
+
+        <label for="endDate" class="d-block mb-2"> {{ selectAnEndDateText }} </label>
+        <nighthawk-date-selector
+          id="endDate"
+          color="primary"
+          [rounded]="true"
+          [border]="true"
+          [fullWidth]="true"
+          [(ngModel)]="endDate"
+          [yearOptions]="years"
+        />
+      }
+    </form>
+
+    <div class="row">
+      <div class="col-auto">
+        <button nighthawkButton type="button" color="primary" [rounded]="true" [border]="true" (click)="clear()">
+          {{ clearText }}
         </button>
       </div>
 
       <div class="col text-end">
-        <button
-          nighthawk-button
-          type="button"
-          class="me-2"
-          color="dark"
-          [rounded]="true"
-          [border]="true"
-          (click)="dialogRef.close(false)"
-        >
-          Close
+        <button nighthawkButton type="button" class="me-2" color="dark" [rounded]="true" [border]="true" (click)="dialogRef.close(false)">
+          {{ closeText }}
         </button>
 
-        <button
-          nighthawk-button
-          type="button"
-          color="primary"
-          [rounded]="true"
-          [border]="true"
-          (click)="submit()"
-        >
-          Submit
+        <button nighthawkButton type="button" color="primary" [rounded]="true" [border]="true" (click)="submit()">
+          {{ submitText }}
         </button>
       </div>
     </div>

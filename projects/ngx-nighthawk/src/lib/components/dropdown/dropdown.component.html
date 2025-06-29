@@ -1,10 +1,5 @@
 <ng-template>
-  <div
-    (click)="handleClick()"
-    class="dropdown-content"
-    [style.margin-top]="offset"
-    @dropdownAnimation
-  >
+  <div (click)="handleClick()" class="dropdown-content" [style.margin-top]="offset" @dropdownAnimation>
     <ng-content></ng-content>
   </div>
 </ng-template>

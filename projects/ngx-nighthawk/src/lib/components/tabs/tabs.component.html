@@ -1,8 +1,14 @@
 <header class="tabs-header">
   <ng-container *ngFor="let tab of tabs(); let i = index">
-    <button nighthawk-button [color]="tab.active ? activeTabButtonColor : inactiveTabButtonColor"
-      [rounded]="tabsButtonRounded" [border]="tabsButtonBorder" [class.me-2]="i !== tabs().length - 1"
-      [size]="tabsButtonSize" (click)="selectTab(tab)">
+    <button
+      nighthawkButton
+      [color]="tab.active ? activeTabButtonColor : inactiveTabButtonColor"
+      [rounded]="tabsButtonRounded"
+      [border]="tabsButtonBorder"
+      [class.me-2]="i !== tabs().length - 1"
+      [size]="tabsButtonSize"
+      (click)="selectTab(tab)"
+    >
       {{ tab.tabLabel }}
     </button>
   </ng-container>

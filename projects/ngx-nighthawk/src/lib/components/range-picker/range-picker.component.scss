@@ -38,8 +38,9 @@
   --min-max-opacity: 0.5;
   --min-max-x-offset: 10%;
   --thumb-shadow: 0 0 3px rgba(0, 0, 0, 0.4), 0 0 1px rgba(0, 0, 0, 0.5) inset, 0 0 0 99px var(--range-picker-thumb-color) inset;
-  --thumb-shadow-active: 0 0 0 calc(var(--thumb-size) / 4) inset var(--range-picker-thumb-color),
-    0 0 0 99px var(--range-picker-main-color) inset, 0 0 3px rgba(0, 0, 0, 0.4);
+  --thumb-shadow-active:
+    0 0 0 calc(var(--thumb-size) / 4) inset var(--range-picker-thumb-color), 0 0 0 99px var(--range-picker-main-color) inset,
+    0 0 3px rgba(0, 0, 0, 0.4);
   --thumb-shadow-hover: var(--thumb-shadow);
   --ticks-thickness: 1px;
   --ticks-height: 5px;
@@ -55,7 +56,7 @@
   --tickIntervalPerc: calc((100% - 2px) / ((var(--max) - var(--min)) / var(--x-step)) * var(--tickEvery, 1));
   --value-a: Clamp(var(--min), var(--value, 0), var(--max));
   --value-b: var(--value, 0);
-  --text-value-a: var(--text-value, '');
+  --text-value-a: var(--text-value, "");
   --completed-a: calc((var(--value-a) - var(--min)) / (var(--max) - var(--min)) * 100);
   --completed-b: calc((var(--value-b) - var(--min)) / (var(--max) - var(--min)) * 100);
   --ca: Min(var(--completed-a), var(--completed-b));
@@ -89,7 +90,7 @@
   position: relative;
   z-index: 1;
 
-  &[data-ticks-position='top'] {
+  &[data-ticks-position="top"] {
     --flip-y: 1;
   }
 
@@ -131,7 +132,7 @@
     z-index: 5;
 
     &::after {
-      content: '';
+      content: "";
       width: 100%;
       display: inline-block;
       height: 0;
@@ -154,7 +155,7 @@
     border-radius: var(--progress-radius);
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       left: 0;
       right: 0;
@@ -168,7 +169,7 @@
     }
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       right: 0;
@@ -239,7 +240,7 @@
         --value: var(--value-a);
         --x-offset: calc(var(--completed-a) * -1%);
         &::after {
-          content: var(--prefix, '') var(--text-value-a) var(--suffix, '');
+          content: var(--prefix, "") var(--text-value-a) var(--suffix, "");
         }
       }
     }

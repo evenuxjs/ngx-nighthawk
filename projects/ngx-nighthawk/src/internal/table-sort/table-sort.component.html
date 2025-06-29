@@ -2,13 +2,16 @@
   <ng-content></ng-content>
 
   @if (currentField !== config.currentSortField) {
-  <i class="fa fa-sort"></i>
-  } @else { @if (currentField === config.currentSortField) { @if
-  (config.currentSortDirection === '') {
-  <i class="fa fa-sort" aria-hidden="true"></i>
-  } @else if (config.currentSortDirection === 'asc') {
-  <i class="fa fa-sort-asc" aria-hidden="true"></i>
-  } @else if (config.currentSortDirection === 'desc') {
-  <i class="fa fa-sort-desc" aria-hidden="true"></i>
-  } } }
+    <i class="fa fa-sort"></i>
+  } @else {
+    @if (currentField === config.currentSortField) {
+      @if (config.currentSortDirection === "") {
+        <i class="fa fa-sort" aria-hidden="true"></i>
+      } @else if (config.currentSortDirection === "asc") {
+        <i class="fa fa-sort-asc" aria-hidden="true"></i>
+      } @else if (config.currentSortDirection === "desc") {
+        <i class="fa fa-sort-desc" aria-hidden="true"></i>
+      }
+    }
+  }
 </div>

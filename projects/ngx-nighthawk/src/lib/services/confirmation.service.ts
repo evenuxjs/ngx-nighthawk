@@ -1,19 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Dialog, DialogRef } from '@angular/cdk/dialog';
-import { NighthawkConfirmationComponent } from '../components/confirmation/confirmation.component';
+import { Injectable, inject } from "@angular/core";
+import { Dialog, DialogRef } from "@angular/cdk/dialog";
+import { NighthawkConfirmationComponent } from "../components/confirmation/confirmation.component";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class NighthawkConfirmationService {
-  constructor(private readonly dialog: Dialog) {}
+  private readonly dialog = inject(Dialog);
 
-  public show(
-    title: string,
-    text: string,
-    submitText: string,
-    cancelText: string
-  ): DialogRef<unknown, NighthawkConfirmationComponent> {
+  public show(title: string, text: string, submitText: string, cancelText: string): DialogRef<unknown, NighthawkConfirmationComponent> {
     return this.dialog.open(NighthawkConfirmationComponent, {
       disableClose: true,
       closeOnNavigation: true,

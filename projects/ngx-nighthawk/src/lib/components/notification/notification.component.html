@@ -3,8 +3,7 @@
     <h5 class="mb-3">{{ data.title || "Notification" }}</h5>
     <p class="mb-4 mb-md-3">{{ data.text }}</p>
     <div class="footer">
-      <button nighthawk-button type="button" color="primary" [rounded]="true" [border]="true"
-        (click)="dialogRef.close()">
+      <button nighthawkButton type="button" color="primary" [rounded]="true" [border]="true" (click)="dialogRef.close()">
         {{ data.closeText }}
       </button>
     </div>

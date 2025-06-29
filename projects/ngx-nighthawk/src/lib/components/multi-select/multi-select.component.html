@@ -1,11 +1,7 @@
 <div cdkOverlayOrigin #trigger #origin="cdkOverlayOrigin">
-  <div
-    class="input-wrapper"
-    [ngClass]="size + ' ' + color"
-    [class.expanded]="showingOptions"
-  >
+  <div class="input-wrapper" [ngClass]="size + ' ' + color" [class.expanded]="showingOptions">
     <input
-      nighthawk-form-control
+      nighthawkFormControl
       [color]="color"
       [size]="size"
       [rounded]="rounded"
@@ -13,13 +9,7 @@
       [disabled]="isDisabled"
       [ngModel]="selectedDisplayValue"
       [controlToCheckForErrors]="controlToCheckForErrors"
-      [placeholder]="
-        hasSearch
-          ? showingOptions
-            ? searchPlaceholder
-            : placeholder || ''
-          : placeholder
-      "
+      [placeholder]="hasSearch ? (showingOptions ? searchPlaceholder : placeholder || '') : placeholder"
       (ngModelChange)="onSearch($event)"
       (input)="onSearch($event)"
       (focus)="showOptions()"
@@ -27,12 +17,7 @@
       (keydown.enter)="selectOption()"
     />
     <i class="fa fa-caret-down"></i>
-    <div
-      class="click-overlay"
-      [class.is-disabled]="isDisabled"
-      [class.has-search]="hasSearch"
-      (click)="toggleDropdown()"
-    ></div>
+    <div class="click-overlay" [class.is-disabled]="isDisabled" [class.has-search]="hasSearch" (click)="toggleDropdown()"></div>
   </div>
 </div>
 

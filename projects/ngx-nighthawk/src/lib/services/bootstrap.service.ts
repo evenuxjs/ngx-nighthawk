@@ -1,13 +1,16 @@
-import { ComponentRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { NighthawkLoaderComponent } from '../../public-api';
-import { isPlatformBrowser } from '@angular/common';
-import { ApplicationConfig } from '../interfaces/application-config.interface';
-import { NavigationStart, Router } from '@angular/router';
+import { ComponentRef, Injectable, PLATFORM_ID, inject } from "@angular/core";
+import { NighthawkLoaderComponent } from "../../public-api";
+import { isPlatformBrowser } from "@angular/common";
+import { ApplicationConfig } from "../interfaces/application-config.interface";
+import { NavigationStart, Router } from "@angular/router";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class NighthawkBootstrapService {
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly router = inject(Router);
+
   public vcr!: any;
 
   // Config
@@ -17,29 +20,26 @@ export class NighthawkBootstrapService {
   private loaderRef!: ComponentRef<NighthawkLoaderComponent>;
 
   // Hook checks
-  private isBackgroundImagesLoaded: boolean = false;
-  private isImagesLoaded: boolean = false;
+  private isBackgroundImagesLoaded = false;
+  private isImagesLoaded = false;
   private isFontsLoaded = false;
 
   // Initial fonts
   private fonts: string[] = [];
 
   // Timer
-  private startTime: number = 0;
+  private startTime = 0;
 
   // Sanity check
-  private isFirstLoad: boolean = true;
-  private isBrowser: boolean = false;
+  private isFirstLoad = true;
+  private isBrowser = false;
 
-  constructor(
-    @Inject(PLATFORM_ID) private readonly platformId: Object,
-    private readonly router: Router
-  ) {
+  constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
     if (this.isBrowser) {
       this.router.events.subscribe((event) => {
-        if ((event as any).navigationTrigger !== 'popstate') {
+        if ((event as any).navigationTrigger !== "popstate") {
           if (this.config.routeLoaderEnabled && !this.isFirstLoad) {
             if (event instanceof NavigationStart) {
               // Reset cache
@@ -75,7 +75,7 @@ export class NighthawkBootstrapService {
 
     if (this.isBrowser && config.pageLoaderEnabled) {
       // Set as "loading"
-      document.body.classList.add('loading');
+      document.body.classList.add("loading");
 
       // Start timer
       this.startTime = Date.now();
@@ -95,8 +95,8 @@ export class NighthawkBootstrapService {
         this.checkForFinalization();
       }
     } else if (this.isBrowser && !config.pageLoaderEnabled) {
-      const mainElement = document.querySelector('main');
-      if (mainElement) mainElement.classList.add('is-loaded');
+      const mainElement = document.querySelector("main");
+      if (mainElement) mainElement.classList.add("is-loaded");
     }
   }
 
@@ -108,24 +108,28 @@ export class NighthawkBootstrapService {
     this.checkForFinalization();
   }
 
+  public getTranslations(): any {
+    return this.config.i18nPhrases;
+  }
+
   private showLoader(): void {
     this.loaderRef = this.vcr.createComponent(NighthawkLoaderComponent);
-    this.loaderRef.setInput('isPageLoader', true);
-    this.loaderRef.setInput('size', this.config.pageLoaderSize);
+    this.loaderRef.setInput("isPageLoader", true);
+    this.loaderRef.setInput("size", this.config.pageLoaderSize);
   }
 
   private showLoaderWithFadeIn(): void {
     this.loaderRef = this.vcr.createComponent(NighthawkLoaderComponent);
-    this.loaderRef.setInput('isPageLoader', true);
-    this.loaderRef.setInput('size', this.config.pageLoaderSize);
-    this.loaderRef.setInput('isHidden', true);
+    this.loaderRef.setInput("isPageLoader", true);
+    this.loaderRef.setInput("size", this.config.pageLoaderSize);
+    this.loaderRef.setInput("isHidden", true);
 
     setTimeout(() => {
       // Make main element visible
-      const mainElement = document.querySelector('main');
-      if (mainElement) mainElement.classList.remove('is-loaded');
+      const mainElement = document.querySelector("main");
+      if (mainElement) mainElement.classList.remove("is-loaded");
 
-      this.loaderRef.setInput('isHidden', false);
+      this.loaderRef.setInput("isHidden", false);
     });
   }
 
@@ -140,15 +144,15 @@ export class NighthawkBootstrapService {
       timePassed >= this.config.minimumLoaderTime
     ) {
       if (this.isBrowser) {
-        document.body.classList.remove('loading');
+        document.body.classList.remove("loading");
       }
 
       // Make main element visible
-      const mainElement = document.querySelector('main');
-      if (mainElement) mainElement.classList.add('is-loaded');
+      const mainElement = document.querySelector("main");
+      if (mainElement) mainElement.classList.add("is-loaded");
 
       // Hide the loader (650ms animation)
-      this.loaderRef.setInput('isHidden', true);
+      this.loaderRef.setInput("isHidden", true);
       this.loaderRef.instance.isPageLoaderFinished = true;
 
       // Wait for animation before destroying
@@ -165,7 +169,7 @@ export class NighthawkBootstrapService {
 
   private placeImageLoaderHook(): void {
     if (this.isBrowser) {
-      const images = Array.from(document.querySelectorAll('img'));
+      const images = Array.from(document.querySelectorAll("img"));
 
       const checkImageLoad = () => {
         const allLoaded = images.every((img) => img.complete);
@@ -221,10 +225,7 @@ export class NighthawkBootstrapService {
           let fontLoaded = false;
           document.fonts.ready.then(() => {
             document.fonts.forEach((fontFace) => {
-              if (
-                fontFace.family === fontFamily &&
-                fontFace.status === 'loaded'
-              ) {
+              if (fontFace.family === fontFamily && fontFace.status === "loaded") {
                 fontLoaded = true;
               }
             });
@@ -251,11 +252,11 @@ export class NighthawkBootstrapService {
 
   private findAllBackgroundImageUrls(): string[] {
     const urls: string[] = [];
-    const allElements = document.querySelectorAll('*');
+    const allElements = document.querySelectorAll("*");
 
     allElements.forEach((element) => {
       const style = window.getComputedStyle(element);
-      const backgroundImage = style.getPropertyValue('background-image');
+      const backgroundImage = style.getPropertyValue("background-image");
 
       // Extract URL from `url("...")`
       const matches = backgroundImage.match(/url\(["']?(.*?)["']?\)/);

@@ -1,7 +1,7 @@
 <button
   type="button"
-  nighthawk-button
-  nighthawk-controlled-dropdown-trigger
+  nighthawkButton
+  nighthawkControlledDropdownTrigger
   [color]="color"
   [size]="size"
   [border]="border"
@@ -19,7 +19,7 @@
     {{ buttonSelectDateText }}
   </span>
   <span *ngIf="selectedDate">
-    {{ selectedDate | date : dateFormatExpression }}
+    {{ selectedDate | date: dateFormatExpression }}
   </span>
 </button>
 
@@ -63,15 +63,7 @@
   />
 
   <div class="w-100 text-end mb-2">
-    <button
-      nighthawk-button
-      type="button"
-      [color]="color"
-      size="small"
-      [rounded]="true"
-      [border]="true"
-      (click)="close()"
-    >
+    <button nighthawkButton type="button" [color]="color" size="small" [rounded]="true" [border]="true" (click)="close()">
       {{ closeButtonText }}
     </button>
   </div>

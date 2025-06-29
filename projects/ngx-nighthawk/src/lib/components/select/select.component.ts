@@ -1,4 +1,4 @@
-import { ViewportRuler } from '@angular/cdk/scrolling';
+import { ViewportRuler } from "@angular/cdk/scrolling";
 import {
   ChangeDetectorRef,
   Component,
@@ -8,41 +8,24 @@ import {
   OnInit,
   OnChanges,
   AfterViewInit,
-  Inject,
   PLATFORM_ID,
   viewChild,
   output,
-} from '@angular/core';
-import {
-  NG_VALUE_ACCESSOR,
-  ControlValueAccessor,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { OverlayModule } from '@angular/cdk/overlay';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-} from '@angular/animations';
-import { NighthawkFormControlDirective } from '../../directives/form-control.directive';
+  inject,
+} from "@angular/core";
+import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { OverlayModule } from "@angular/cdk/overlay";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { CommonModule, isPlatformBrowser } from "@angular/common";
+import { trigger, state, style, animate, transition } from "@angular/animations";
+import { NighthawkFormControlDirective } from "../../directives/form-control.directive";
 
 @Component({
   standalone: true,
-  selector: 'nighthawk-select',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
-  imports: [
-    CommonModule,
-    OverlayModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NighthawkFormControlDirective,
-  ],
+  selector: "nighthawk-select",
+  templateUrl: "./select.component.html",
+  styleUrls: ["./select.component.scss"],
+  imports: [CommonModule, OverlayModule, FormsModule, ReactiveFormsModule, NighthawkFormControlDirective],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -51,69 +34,66 @@ import { NighthawkFormControlDirective } from '../../directives/form-control.dir
     },
   ],
   animations: [
-    trigger('dropdownAnimation', [
+    trigger("dropdownAnimation", [
       state(
-        'void',
+        "void",
         style({
-          transform: 'scaleY(0)',
+          transform: "scaleY(0)",
           opacity: 0,
-          transformOrigin: 'top',
-        })
+          transformOrigin: "top",
+        }),
       ),
       state(
-        '*',
+        "*",
         style({
-          transform: 'scaleY(1)',
+          transform: "scaleY(1)",
           opacity: 1,
-          transformOrigin: 'top',
-        })
+          transformOrigin: "top",
+        }),
       ),
-      transition('void <=> *', [animate('300ms ease-in-out')]),
+      transition("void <=> *", [animate("300ms ease-in-out")]),
     ]),
   ],
 })
-export class NighthawkSelectComponent
-  implements OnInit, AfterViewInit, OnChanges, ControlValueAccessor
-{
-  readonly trigger = viewChild.required<ElementRef>('trigger');
+export class NighthawkSelectComponent implements OnInit, AfterViewInit, OnChanges, ControlValueAccessor {
+  protected readonly viewportRuler = inject(ViewportRuler);
+  protected readonly changeDetectorRef = inject(ChangeDetectorRef);
+  private readonly platformId = inject(PLATFORM_ID);
 
-  @Input() selectedValue: string = '';
-  @Input() hasSearch: boolean = false;
-  @Input() placeholder: string = '';
-  @Input() searchPlaceholder: string = '';
-  @Input() emptyResultsLabel: string = 'No results found...';
+  readonly trigger = viewChild.required<ElementRef>("trigger");
+
+  @Input() selectedValue = "";
+  @Input() hasSearch = false;
+  @Input() placeholder = "";
+  @Input() searchPlaceholder = "";
+  @Input() emptyResultsLabel = "No results found...";
   @Input() options: any[] = [];
-  @Input() nameField: string = '';
-  @Input() valueField: string = '';
-  @Input() color: 'primary' | 'secondary' | 'dark' | 'light' | 'transparent' =
-    'primary';
-  @Input() size: 'large' | 'medium' | 'small' = 'medium';
-  @Input() rounded: boolean = false;
-  @Input() border: boolean = false;
+  @Input() nameField = "";
+  @Input() valueField = "";
+  @Input() color: "primary" | "secondary" | "dark" | "light" | "transparent" = "primary";
+  @Input() size: "large" | "medium" | "small" = "medium";
+  @Input() rounded = false;
+  @Input() border = false;
   @Input() controlToCheckForErrors!: any;
   @Input() isDisabled!: boolean;
 
   readonly onOptionSelect = output<string>();
   readonly onSearchValue = output<string>();
 
-  public searchString: string = '';
+  public searchString = "";
   public selectedOption: any = null;
-  public showingOptions: boolean = false;
+  public showingOptions = false;
   public filteredOptions: any[] = [];
-  public parentWidth: number = 0;
+  public parentWidth = 0;
 
   public onModelChange: (value: unknown) => void = () => {};
 
-  private ignoreClose: boolean = false;
+  private ignoreClose = false;
   private onTouched: () => void = () => {};
 
-  private isBrowser: boolean = false;
+  private isBrowser = false;
 
-  constructor(
-    protected readonly viewportRuler: ViewportRuler,
-    protected readonly changeDetectorRef: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private readonly platformId: Object
-  ) {
+  constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.viewportRuler
       .change()
@@ -140,23 +120,23 @@ export class NighthawkSelectComponent
         return option[this.valueField] === this.selectedOption[this.valueField];
       });
 
-      this.selectedValue = existing ? existing[this.nameField] : '';
+      this.selectedValue = existing ? existing[this.nameField] : "";
     }
   }
 
   public writeValue(value: unknown): void {
-    if (value !== null && value !== undefined) {
-      this.selectedOption =
-        this.options.find((option) => option[this.valueField] === value) ||
-        null;
-      if (this.selectedOption) {
-        this.selectedValue = this.selectedOption[this.nameField];
+    if (value !== null && value !== undefined && this.options?.length && this.nameField && this.valueField) {
+      const option = this.options.find((opt) => opt[this.valueField] == value);
+      if (option) {
+        this.selectedOption = option;
+        this.selectedValue = option[this.nameField];
       } else {
-        this.selectedValue = '';
+        this.selectedOption = null;
+        this.selectedValue = "";
       }
     } else {
-      this.selectedValue = '';
       this.selectedOption = null;
+      this.selectedValue = "";
     }
   }
 
@@ -179,7 +159,7 @@ export class NighthawkSelectComponent
   }
 
   public onSearch(event: any): void {
-    this.searchString = event?.target?.value || '';
+    this.searchString = event?.target?.value || "";
     this.filterOptions(this.searchString);
     this.onSearchValue.emit(this.searchString);
 
@@ -209,16 +189,13 @@ export class NighthawkSelectComponent
   public selectOption(index: number | undefined = undefined): void {
     let option = null;
     if (index === undefined) {
-      const matchingOption = this.options.find(
-        (opt) =>
-          opt[this.nameField].toLowerCase() === this.searchString.toLowerCase()
-      );
+      const matchingOption = this.options.find((opt) => opt[this.nameField].toLowerCase() === this.searchString.toLowerCase());
 
       if (matchingOption) {
         option = matchingOption;
       } else {
         this.selectedOption = null;
-        this.selectedValue = '';
+        this.selectedValue = "";
         this.ignoreClose = false;
         this.hideOptions();
         this.onTouched();
@@ -239,7 +216,7 @@ export class NighthawkSelectComponent
       setTimeout(() => {
         this.onModelChange(option[this.valueField]);
         this.onOptionSelect.emit(option[this.valueField]);
-        this.filterOptions('');
+        this.filterOptions("");
       });
 
       this.ignoreClose = false;
@@ -249,24 +226,19 @@ export class NighthawkSelectComponent
   }
 
   private selectMatchingOption(searchString: string): void {
-    const matchingOption = this.options.find(
-      (option) =>
-        option[this.nameField].toLowerCase() === searchString.toLowerCase()
-    );
+    const matchingOption = this.options.find((option) => option[this.nameField].toLowerCase() === searchString.toLowerCase());
 
     if (matchingOption) {
       this.selectOption(matchingOption);
     } else {
       this.selectedOption = null;
-      this.selectedValue = '';
+      this.selectedValue = "";
       this.onModelChange(null);
     }
   }
 
   private filterOptions(value: string): void {
-    this.filteredOptions = this.options.filter((option) =>
-      option[this.nameField].toLowerCase().includes(value.toLowerCase())
-    );
+    this.filteredOptions = this.options.filter((option) => option[this.nameField].toLowerCase().includes(value.toLowerCase()));
   }
 
   private measureParentWidth(): void {

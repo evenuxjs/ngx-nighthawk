@@ -1,18 +1,12 @@
-import {
-  Component,
-  HostListener,
-  Input,
-  forwardRef,
-  output
-} from '@angular/core';
-import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, HostListener, Input, forwardRef, output } from "@angular/core";
+import { FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 @Component({
   standalone: true,
   imports: [FormsModule],
-  selector: 'nighthawk-range-picker',
-  templateUrl: 'range-picker.component.html',
-  styleUrls: ['./range-picker.component.scss'],
+  selector: "nighthawk-range-picker",
+  templateUrl: "range-picker.component.html",
+  styleUrls: ["./range-picker.component.scss"],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -22,30 +16,29 @@ import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class NighthawkRangePickerComponent {
-  @HostListener('mousedown')
+  @HostListener("mousedown")
   onMouseDown(): void {
     this.onMouseClick.emit(true);
   }
 
-  @HostListener('mouseup')
+  @HostListener("mouseup")
   onMouseUp(): void {
     this.onMouseClick.emit(false);
   }
 
-  @Input() valueA: number = 0;
-  @Input() valueB: number = 0;
-  @Input() minValue: number = 0;
-  @Input() maxValue: number = 100;
-  @Input() size: 'large' | 'medium' | 'small' = 'medium';
-  @Input() min: number = 0;
-  @Input() max: number = 100;
-  @Input() step: number = 1;
-  @Input() tickCount: number = 5;
-  @Input() suffix: string = '';
-  @Input() ticks: boolean = true;
-  @Input() label: boolean = true;
+  @Input() valueA = 0;
+  @Input() valueB = 0;
+  @Input() minValue = 0;
+  @Input() maxValue = 100;
+  @Input() size: "large" | "medium" | "small" = "medium";
+  @Input() min = 0;
+  @Input() max = 100;
+  @Input() step = 1;
+  @Input() tickCount = 5;
+  @Input() suffix = "";
+  @Input() ticks = true;
+  @Input() label = true;
 
-  // eslint-disable-next-line @angular-eslint/no-output-on-prefix, @typescript-eslint/no-explicit-any
   readonly onValueChange = output<any>();
   readonly onMouseClick = output<boolean>();
 
@@ -54,11 +47,11 @@ export class NighthawkRangePickerComponent {
   private onTouched: () => void = () => {};
 
   get textValueA(): string {
-    return this.valueA?.toString() || '';
+    return this.valueA?.toString() || "";
   }
 
   get textValueB(): string {
-    return this.valueB?.toString() || '';
+    return this.valueB?.toString() || "";
   }
 
   public updateRangeValueA(event: Event): void {
@@ -73,7 +66,6 @@ export class NighthawkRangePickerComponent {
     this.onStateChange();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public writeValue(values: any): void {
     if (values) {
       this.valueA = values.a;

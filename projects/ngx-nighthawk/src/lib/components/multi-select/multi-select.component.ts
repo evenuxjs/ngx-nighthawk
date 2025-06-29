@@ -1,4 +1,4 @@
-import { ViewportRuler } from '@angular/cdk/scrolling';
+import { ViewportRuler } from "@angular/cdk/scrolling";
 import {
   ChangeDetectorRef,
   Component,
@@ -8,43 +8,25 @@ import {
   OnInit,
   OnChanges,
   AfterViewInit,
-  Inject,
   PLATFORM_ID,
   viewChild,
   output,
-} from '@angular/core';
-import {
-  NG_VALUE_ACCESSOR,
-  ControlValueAccessor,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { OverlayModule } from '@angular/cdk/overlay';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-} from '@angular/animations';
-import { NighthawkFormControlDirective } from '../../directives/form-control.directive';
-import { NighthawkCheckboxComponent } from '../../components/checkbox/checkbox.component';
+  inject,
+} from "@angular/core";
+import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { OverlayModule } from "@angular/cdk/overlay";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { CommonModule, isPlatformBrowser } from "@angular/common";
+import { trigger, state, style, animate, transition } from "@angular/animations";
+import { NighthawkFormControlDirective } from "../../directives/form-control.directive";
+import { NighthawkCheckboxComponent } from "../../components/checkbox/checkbox.component";
 
 @Component({
   standalone: true,
-  selector: 'nighthawk-multi-select',
-  templateUrl: './multi-select.component.html',
-  styleUrls: ['./multi-select.component.scss'],
-  imports: [
-    CommonModule,
-    OverlayModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NighthawkFormControlDirective,
-    NighthawkCheckboxComponent,
-  ],
+  selector: "nighthawk-multi-select",
+  templateUrl: "./multi-select.component.html",
+  styleUrls: ["./multi-select.component.scss"],
+  imports: [CommonModule, OverlayModule, FormsModule, ReactiveFormsModule, NighthawkFormControlDirective, NighthawkCheckboxComponent],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -53,45 +35,46 @@ import { NighthawkCheckboxComponent } from '../../components/checkbox/checkbox.c
     },
   ],
   animations: [
-    trigger('dropdownAnimation', [
+    trigger("dropdownAnimation", [
       state(
-        'void',
+        "void",
         style({
-          transform: 'scaleY(0)',
+          transform: "scaleY(0)",
           opacity: 0,
-          transformOrigin: 'top',
-        })
+          transformOrigin: "top",
+        }),
       ),
       state(
-        '*',
+        "*",
         style({
-          transform: 'scaleY(1)',
+          transform: "scaleY(1)",
           opacity: 1,
-          transformOrigin: 'top',
-        })
+          transformOrigin: "top",
+        }),
       ),
-      transition('void <=> *', [animate('300ms ease-in-out')]),
+      transition("void <=> *", [animate("300ms ease-in-out")]),
     ]),
   ],
 })
-export class NighthawkMultiSelectComponent
-  implements OnInit, AfterViewInit, OnChanges, ControlValueAccessor
-{
-  readonly trigger = viewChild.required<ElementRef>('trigger');
+export class NighthawkMultiSelectComponent implements OnInit, AfterViewInit, OnChanges, ControlValueAccessor {
+  protected readonly viewportRuler = inject(ViewportRuler);
+  protected readonly changeDetectorRef = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
+
+  readonly trigger = viewChild.required<ElementRef>("trigger");
 
   @Input() selectedValue: any[] = [];
-  @Input() hasSearch: boolean = false;
-  @Input() placeholder: string = '';
-  @Input() searchPlaceholder: string = '';
-  @Input() emptyResultsLabel: string = 'No results found...';
+  @Input() hasSearch = false;
+  @Input() placeholder = "";
+  @Input() searchPlaceholder = "";
+  @Input() emptyResultsLabel = "No results found...";
   @Input() options: any[] = [];
-  @Input() nameField: string = '';
-  @Input() valueField: string = '';
-  @Input() color: 'primary' | 'secondary' | 'dark' | 'light' | 'transparent' =
-    'primary';
-  @Input() size: 'large' | 'medium' | 'small' = 'medium';
-  @Input() rounded: boolean = false;
-  @Input() border: boolean = false;
+  @Input() nameField = "";
+  @Input() valueField = "";
+  @Input() color: "primary" | "secondary" | "dark" | "light" | "transparent" = "primary";
+  @Input() size: "large" | "medium" | "small" = "medium";
+  @Input() rounded = false;
+  @Input() border = false;
   @Input() controlToCheckForErrors!: any;
   @Input() isDisabled!: boolean;
 
@@ -99,21 +82,17 @@ export class NighthawkMultiSelectComponent
   readonly onSearchValue = output<string>();
 
   public selectedOptions: any[] = [];
-  public showingOptions: boolean = false;
+  public showingOptions = false;
   public filteredOptions: any[] = [];
-  public parentWidth: number = 0;
-  public selectedDisplayValue: string = '';
+  public parentWidth = 0;
+  public selectedDisplayValue = "";
 
   public onModelChange: (value: unknown) => void = () => {};
   private onTouched: () => void = () => {};
 
-  private isBrowser: boolean = false;
+  private isBrowser = false;
 
-  constructor(
-    protected readonly viewportRuler: ViewportRuler,
-    protected readonly changeDetectorRef: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
+  constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.viewportRuler
       .change()
@@ -166,7 +145,7 @@ export class NighthawkMultiSelectComponent
   public onSearch(event: any): void {
     if (!event || !event.target) return;
 
-    const searchString = event.target.value ?? '';
+    const searchString = event.target.value ?? "";
     this.onSearchValue.emit(searchString);
     this.filterOptions(searchString);
 
@@ -201,21 +180,15 @@ export class NighthawkMultiSelectComponent
 
   public onOptionChange(option: any): void {
     if (option.selected) {
-      const alreadySelected = this.selectedOptions.some(
-        (opt) => opt[this.valueField] === option[this.valueField]
-      );
+      const alreadySelected = this.selectedOptions.some((opt) => opt[this.valueField] === option[this.valueField]);
       if (!alreadySelected) {
         this.selectedOptions.push(option);
       }
     } else {
-      this.selectedOptions = this.selectedOptions.filter(
-        (opt) => opt[this.valueField] !== option[this.valueField]
-      );
+      this.selectedOptions = this.selectedOptions.filter((opt) => opt[this.valueField] !== option[this.valueField]);
     }
 
-    this.selectedValue = this.selectedOptions.map(
-      (opt) => opt[this.valueField]
-    );
+    this.selectedValue = this.selectedOptions.map((opt) => opt[this.valueField]);
 
     this.onModelChange(this.selectedValue);
     this.onOptionSelect.emit(this.selectedValue);
@@ -225,15 +198,11 @@ export class NighthawkMultiSelectComponent
 
   private filterOptions(value: string): void {
     const options = JSON.parse(JSON.stringify(this.options));
-    this.filteredOptions = options.filter((option: any) =>
-      option[this.nameField].toLowerCase().includes(value.toLowerCase())
-    );
+    this.filteredOptions = options.filter((option: any) => option[this.nameField].toLowerCase().includes(value.toLowerCase()));
   }
 
   private updateSelectedOptions(): void {
-    this.selectedOptions = this.options.filter((option) =>
-      this.selectedValue.includes(option[this.valueField])
-    );
+    this.selectedOptions = this.options.filter((option) => this.selectedValue.includes(option[this.valueField]));
 
     this.options.forEach((option) => {
       option.selected = this.selectedValue.includes(option[this.valueField]);
@@ -243,9 +212,7 @@ export class NighthawkMultiSelectComponent
   }
 
   private updateDisplayValue(): void {
-    this.selectedDisplayValue = this.selectedOptions
-      .map((opt) => opt[this.nameField])
-      .join(', ');
+    this.selectedDisplayValue = this.selectedOptions.map((opt) => opt[this.nameField]).join(", ");
   }
 
   private measureParentWidth(): void {

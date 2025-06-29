@@ -1,47 +1,49 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  output,
-} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, output, inject } from "@angular/core";
+import { NighthawkBootstrapService } from "../../services/bootstrap.service";
 
 @Component({
   standalone: true,
-  selector: 'nighthawk-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss'],
+  selector: "nighthawk-calendar",
+  templateUrl: "./calendar.component.html",
+  styleUrls: ["./calendar.component.scss"],
 })
 export class NighthawkCalendarComponent implements OnInit, OnChanges {
-  @Input() month: number = 0;
+  private readonly bootstrapService = inject(NighthawkBootstrapService);
+
+  @Input() month = 0;
   @Input() year: number = new Date().getUTCFullYear();
-  @Input() size: 'large' | 'small' = 'small';
-  @Input() startDayOfWeek: number = 1; // Default to Monday (0 is Sunday, 1 is Monday, and so on)
-  @Input() dayNames: string[] = [
-    'Mon',
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
-    'Sun',
-  ];
+  @Input() size: "large" | "small" = "small";
+  @Input() startDayOfWeek = 1; // Default to Monday (0 is Sunday, 1 is Monday, and so on)
+  @Input() dayNames: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   readonly selectedDay = output<{
     day: number;
     month: number;
     year: number;
   }>();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public weeks: any[][] = [];
+
+  constructor() {
+    const translations = this.bootstrapService.getTranslations();
+    if (translations) {
+      this.dayNames = [
+        translations.weekDaysMid.monday,
+        translations.weekDaysMid.tuesday,
+        translations.weekDaysMid.wednesday,
+        translations.weekDaysMid.thursday,
+        translations.weekDaysMid.friday,
+        translations.weekDaysMid.saturday,
+        translations.weekDaysMid.sundary,
+      ];
+    }
+  }
 
   public ngOnInit(): void {
     this.generateCalendar();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes['month'] || changes['year']) {
+    if (changes["month"] || changes["year"]) {
       this.generateCalendar();
     }
   }
@@ -59,19 +61,14 @@ export class NighthawkCalendarComponent implements OnInit, OnChanges {
 
     // Calculate the days from the previous month
     const prevMonthLastDay = new Date(this.year, this.month - 1, 0).getDate();
-    const prevMonthDays = Array.from(
-      { length: daysUntilStart },
-      (_, i) => prevMonthLastDay - i
-    ).reverse();
+    const prevMonthDays = Array.from({ length: daysUntilStart }, (_, i) => prevMonthLastDay - i).reverse();
 
     // Calculate the days from the next month
     const totalDaysInCalendar = daysInMonth + daysUntilStart;
-    const daysAfterEnd =
-      totalDaysInCalendar % 7 === 0 ? 0 : 7 - (totalDaysInCalendar % 7);
+    const daysAfterEnd = totalDaysInCalendar % 7 === 0 ? 0 : 7 - (totalDaysInCalendar % 7);
     const nextMonthDays = Array.from({ length: daysAfterEnd }, (_, i) => i + 1);
 
     for (let i = 0; i < 6; i++) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const week: any[] = [];
 
       for (let j = 0; j < 7; j++) {
@@ -96,7 +93,6 @@ export class NighthawkCalendarComponent implements OnInit, OnChanges {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public selectDay(day: any): void {
     if (day.month === this.month) {
       this.selectedDay.emit({

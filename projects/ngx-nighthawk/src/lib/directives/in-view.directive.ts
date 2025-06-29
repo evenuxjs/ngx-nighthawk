@@ -1,33 +1,19 @@
-import {
-  Directive,
-  ElementRef,
-  AfterViewInit,
-  OnDestroy,
-  Inject,
-  PLATFORM_ID,
-  output,
-  OutputEmitterRef,
-} from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Directive, ElementRef, AfterViewInit, OnDestroy, PLATFORM_ID, output, OutputEmitterRef, inject } from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
 
 @Directive({
-  selector: '[nighthawk-in-view]',
+  selector: "[nighthawkInView]",
   standalone: true,
 })
 export class NighthawkInViewDirective implements AfterViewInit, OnDestroy {
+  private el = inject(ElementRef);
+  private platformId = inject(PLATFORM_ID);
+
   readonly inView: OutputEmitterRef<boolean> = output();
   private observer: IntersectionObserver | null = null;
 
-  constructor(
-    private el: ElementRef,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
-
   public ngAfterViewInit(): void {
-    if (
-      isPlatformBrowser(this.platformId) &&
-      'IntersectionObserver' in window
-    ) {
+    if (isPlatformBrowser(this.platformId) && "IntersectionObserver" in window) {
       this.observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -36,7 +22,7 @@ export class NighthawkInViewDirective implements AfterViewInit, OnDestroy {
         },
         {
           threshold: [0, 0.5, 1],
-        }
+        },
       );
 
       this.observer.observe(this.el.nativeElement);

@@ -1,12 +1,12 @@
-import { Pipe } from '@angular/core';
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: 'firstKey',
+  name: "firstKey",
   standalone: true,
 })
-export class NighthawkFirstKeyPipe {
+export class NighthawkFirstKeyPipe implements PipeTransform {
   transform(obj: any) {
-    if (obj && typeof obj === 'object') {
+    if (obj && typeof obj === "object") {
       const keys = Object.keys(obj);
       if (keys && keys.length > 0) {
         return keys[0];

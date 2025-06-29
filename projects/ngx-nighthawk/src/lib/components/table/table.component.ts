@@ -1,47 +1,38 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from "@angular/common";
 import {
   Component,
   TemplateRef,
   Input,
   OnInit,
   ViewContainerRef,
-  Inject,
   PLATFORM_ID,
   contentChildren,
   output,
   AfterContentInit,
-} from '@angular/core';
-import { CdkTableModule } from '@angular/cdk/table';
-import {
-  CdkDragDrop,
-  DragDropModule,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
-import { NighthawkTableSortComponent } from '../../../internal/table-sort/table-sort.component';
-import { of, Subject } from 'rxjs';
-import {
-  catchError,
-  debounceTime,
-  distinctUntilChanged,
-  take,
-} from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import queryString from 'query-string';
-import { FormsModule } from '@angular/forms';
-import { DateTime } from 'luxon';
-import { NighthawkSelectComponent } from '../select/select.component';
-import { NighthawkFormControlDirective } from '../../directives/form-control.directive';
-import { NighthawkButtonDirective } from '../../directives/button.directive';
-import { NighthawkPaginationComponent } from '../pagination/pagination.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NighthawkDialogService } from '../../services/dialog.service';
-import { NighthawkDateSelectDialogComponent } from '../../../internal/date-select-dialog/date-select-dialog.component';
-import { NighthawkBootstrapService } from '../../services/bootstrap.service';
+  inject,
+} from "@angular/core";
+import { CdkTableModule } from "@angular/cdk/table";
+import { CdkDragDrop, DragDropModule, moveItemInArray } from "@angular/cdk/drag-drop";
+import { NighthawkTableSortComponent } from "../../../internal/table-sort/table-sort.component";
+import { of, Subject } from "rxjs";
+import { catchError, debounceTime, distinctUntilChanged, take } from "rxjs/operators";
+import { HttpClient } from "@angular/common/http";
+import queryString from "query-string";
+import { FormsModule } from "@angular/forms";
+import { DateTime } from "luxon";
+import { NighthawkSelectComponent } from "../select/select.component";
+import { NighthawkFormControlDirective } from "../../directives/form-control.directive";
+import { NighthawkButtonDirective } from "../../directives/button.directive";
+import { NighthawkPaginationComponent } from "../pagination/pagination.component";
+import { ActivatedRoute, Router } from "@angular/router";
+import { NighthawkDialogService } from "../../services/dialog.service";
+import { NighthawkDateSelectDialogComponent } from "../../../internal/date-select-dialog/date-select-dialog.component";
+import { NighthawkBootstrapService } from "../../services/bootstrap.service";
 
 @Component({
-  selector: 'nighthawk-table',
-  templateUrl: 'table.component.html',
-  styleUrls: ['table.component.scss'],
+  selector: "nighthawk-table",
+  templateUrl: "table.component.html",
+  styleUrls: ["table.component.scss"],
   imports: [
     CommonModule,
     FormsModule,
@@ -56,6 +47,14 @@ import { NighthawkBootstrapService } from '../../services/bootstrap.service';
   standalone: true,
 })
 export class NighthawkTableComponent implements OnInit, AfterContentInit {
+  private platformid = inject(PLATFORM_ID);
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly dialogService = inject(NighthawkDialogService);
+  private readonly nighthawk = inject(NighthawkBootstrapService);
+
   @Input() config!: {
     fields: {
       name: string;
@@ -66,10 +65,10 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
       searchEnabled: boolean;
       searchType: string;
       searchValue?: string;
-      width?: number | string | 'auto';
+      width?: number | string | "auto";
     }[];
     currentSortField: string;
-    currentSortDirection: 'asc' | 'desc' | '';
+    currentSortDirection: "asc" | "desc" | "";
     searchQueryParams: any;
     page: number;
     perPage: number;
@@ -78,32 +77,32 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
 
   @Input() data: any[] = [];
 
-  @Input() fetchUrl: string = '';
+  @Input() fetchUrl = "";
 
-  @Input() showPerPage: boolean = true;
+  @Input() showPerPage = true;
 
-  @Input() showTotal: boolean = true;
+  @Input() showTotal = true;
 
-  @Input() filtersEnabled: boolean = true;
+  @Input() filtersEnabled = true;
 
-  @Input() footerEnabled: boolean = true;
+  @Input() footerEnabled = true;
 
-  @Input() allowReorder: boolean = false;
+  @Input() allowReorder = false;
 
-  @Input() maxTableHeight: number = 740;
+  @Input() maxTableHeight = 740;
 
   @Input() language = {
-    showFilters: 'Show filters',
-    collapse: 'Collapse',
-    expand: 'Expand',
-    sortByField: 'Sort by field',
-    sortByDirection: 'Sort direction',
-    searchField: 'Search field',
-    searchValue: 'Search value',
-    submit: 'Submit',
-    clear: 'Clear',
-    perPage: 'Per page',
-    total: 'Total',
+    showFilters: "Show filters",
+    collapse: "Collapse",
+    expand: "Expand",
+    sortByField: "Sort by field",
+    sortByDirection: "Sort direction",
+    searchField: "Search field",
+    searchValue: "Search value",
+    submit: "Submit",
+    clear: "Clear",
+    perPage: "Per page",
+    total: "Total",
   };
 
   readonly onTableChange = output<{
@@ -114,7 +113,7 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
       searchType: string;
     }[];
     currentSortField: string;
-    currentSortDirection: 'asc' | 'desc' | '';
+    currentSortDirection: "asc" | "desc" | "";
     searchQueryParams: any;
     page: number;
     perPage: number;
@@ -123,68 +122,60 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
 
   readonly onQueryData = output<{
     currentSortField: string;
-    currentSortDirection: 'asc' | 'desc' | '';
+    currentSortDirection: "asc" | "desc" | "";
     searchQueryParams: any;
     data: any[];
   }>();
 
-  readonly headers = contentChildren<TemplateRef<any>>('header', {
+  readonly headers = contentChildren<TemplateRef<any>>("header", {
     descendants: true,
   });
 
-  readonly cells = contentChildren<TemplateRef<any>>('cell', {
+  readonly cells = contentChildren<TemplateRef<any>>("cell", {
     descendants: true,
   });
 
   public sortByOptions: { name: string; field: string }[] = [];
   public sortDirectionOptions: { name: string; direction: string }[] = [
-    { name: 'Ascending', direction: 'asc' },
-    { name: 'Descending', direction: 'desc' },
+    { name: "Ascending", direction: "asc" },
+    { name: "Descending", direction: "desc" },
   ];
 
   public searchFieldOptions: { name: string; field: string }[] = [];
   public headerLabels: string[] = [];
-  public displayFilters: boolean = false;
+  public displayFilters = false;
 
-  public sortByValue: string = '';
-  public sortDirectionValue: string = '';
-  public searchFieldValue: string = '';
-  public searchTermValue: string = '';
+  public sortByValue = "";
+  public sortDirectionValue = "";
+  public searchFieldValue = "";
+  public searchTermValue = "";
 
   public headerCellDefinitions: string[] = [];
   public header2CellDefinitions: string[] = [];
   public cellBodyDefinitions: string[] = [];
 
   public perPageOptions: { name: string; value: number }[] = [
-    { name: '10', value: 10 },
-    { name: '25', value: 25 },
-    { name: '50', value: 50 },
-    { name: '100', value: 100 },
+    { name: "10", value: 10 },
+    { name: "25", value: 25 },
+    { name: "50", value: 50 },
+    { name: "100", value: 100 },
   ];
 
-  public isBrowser: boolean = false;
+  public isBrowser = false;
 
   private searchSubject = new Subject<{ field: string; value: string }>();
-  private currentRequestId: number = 0;
-  private initialRequest: boolean = true;
+  private currentRequestId = 0;
+  private initialRequest = true;
 
-  constructor(
-    @Inject(PLATFORM_ID) private platformid: object,
-    private readonly viewContainerRef: ViewContainerRef,
-    private readonly http: HttpClient,
-    private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly dialogService: NighthawkDialogService,
-    private readonly nighthawk: NighthawkBootstrapService
-  ) {
+  constructor() {
     this.isBrowser = isPlatformBrowser(this.platformid);
   }
 
   public ngOnInit(): void {
     for (const field of this.config.fields) {
-      field.headerDefinition = field.name + 'Header';
-      field.header2Definition = field.name + 'Header2';
-      field.bodyDefinition = field.name + 'Body';
+      field.headerDefinition = field.name + "Header";
+      field.header2Definition = field.name + "Header2";
+      field.bodyDefinition = field.name + "Body";
 
       this.headerCellDefinitions.push(field.headerDefinition);
       this.header2CellDefinitions.push(field.header2Definition);
@@ -194,17 +185,17 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
     this.searchSubject
       .pipe(
         debounceTime(300),
-        distinctUntilChanged((prev, curr) => prev.value === curr.value)
+        distinctUntilChanged((prev, curr) => prev.value === curr.value),
       )
       .subscribe(({ field, value }) => {
-        const currentPath = this.router.url.split('?')[0];
+        const currentPath = this.router.url.split("?")[0];
         const updatedParams = {
           ...this.config.searchQueryParams,
           [field]: value,
         };
         this.router.navigate([currentPath], {
           queryParams: { ...updatedParams, page: 1 },
-          queryParamsHandling: 'merge',
+          queryParamsHandling: "merge",
         });
       });
 
@@ -221,14 +212,13 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
       this.config.page = page || this.config.page || 1;
       this.config.perPage = limit || this.config.perPage || 10;
       this.config.currentSortField = sort || this.config.currentSortField;
-      this.config.currentSortDirection =
-        direction || this.config.currentSortDirection;
+      this.config.currentSortDirection = direction || this.config.currentSortDirection;
 
       // Update mobile filter values
       this.sortByValue = sort || this.config.currentSortField;
       this.sortDirectionValue = direction || this.config.currentSortDirection;
-      this.searchFieldValue = Object.keys(filters)[0] || '';
-      this.searchTermValue = filters[Object.keys(filters)[0]] || '';
+      this.searchFieldValue = Object.keys(filters)[0] || "";
+      this.searchTermValue = filters[Object.keys(filters)[0]] || "";
 
       // Emit changes
       this.onTableChange.emit(this.config);
@@ -247,9 +237,7 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
   public ngAfterContentInit() {
     this.headers().forEach((headerTemplate) => {
       const view = this.viewContainerRef.createEmbeddedView(headerTemplate);
-      const textContent = view.rootNodes
-        .map((node) => node.textContent)
-        .join('');
+      const textContent = view.rootNodes.map((node) => node.textContent).join("");
 
       this.headerLabels.push(textContent);
       view.destroy();
@@ -272,30 +260,30 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
   }
 
   public submitFilters(): void {
-    const currentPath = this.router.url.split('?')[0];
+    const currentPath = this.router.url.split("?")[0];
     this.router.navigate([currentPath], {
       queryParams: {
         sort: this.sortByValue,
         direction: this.sortDirectionValue,
         [this.searchFieldValue]: this.searchTermValue,
       },
-      queryParamsHandling: 'merge',
+      queryParamsHandling: "merge",
     });
   }
 
   public clearFilters(): void {
-    const currentPath = this.router.url.split('?')[0];
+    const currentPath = this.router.url.split("?")[0];
     this.router.navigate([currentPath], {
       queryParams: {},
-      queryParamsHandling: 'replace',
+      queryParamsHandling: "replace",
     });
   }
 
   public clearSearchForField(fieldName: string): void {
-    const currentPath = this.router.url.split('?')[0];
+    const currentPath = this.router.url.split("?")[0];
     this.router.navigate([currentPath], {
       queryParams: { [fieldName]: null },
-      queryParamsHandling: 'merge',
+      queryParamsHandling: "merge",
     });
   }
 
@@ -304,25 +292,19 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
     const dialogData: any = {};
 
     if (dateString) {
-      const dates = dateString.split('-');
+      const dates = dateString.split("-");
 
       if (dates[0] === dates[1]) {
-        const dateStringParts0 = dates[0].split('.');
+        const dateStringParts0 = dates[0].split(".");
 
-        dialogData.selectedDate = new Date(
-          `${dateStringParts0[2]}-${dateStringParts0[1]}-${dateStringParts0[0]}`
-        );
+        dialogData.selectedDate = new Date(`${dateStringParts0[2]}-${dateStringParts0[1]}-${dateStringParts0[0]}`);
       } else {
-        const dateStringParts0 = dates[0].split('.');
-        const dateStringParts1 = dates[1].split('.');
+        const dateStringParts0 = dates[0].split(".");
+        const dateStringParts1 = dates[1].split(".");
 
-        dialogData.startDate = new Date(
-          `${dateStringParts0[2]}-${dateStringParts0[1]}-${dateStringParts0[0]}`
-        );
+        dialogData.startDate = new Date(`${dateStringParts0[2]}-${dateStringParts0[1]}-${dateStringParts0[0]}`);
 
-        dialogData.endDate = new Date(
-          `${dateStringParts1[2]}-${dateStringParts1[1]}-${dateStringParts1[0]}`
-        );
+        dialogData.endDate = new Date(`${dateStringParts1[2]}-${dateStringParts1[1]}-${dateStringParts1[0]}`);
       }
     }
 
@@ -333,64 +315,58 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
     });
 
     ref.closed.pipe(take(1)).subscribe((response: any) => {
-      if (response === 'clear') {
-        const currentPath = this.router.url.split('?')[0];
+      if (response === "clear") {
+        const currentPath = this.router.url.split("?")[0];
         this.router.navigate([currentPath], {
           queryParams: {
-            [fieldName]: '',
+            [fieldName]: "",
           },
-          queryParamsHandling: 'merge',
+          queryParamsHandling: "merge",
         });
       } else if (response) {
         let dateString;
 
-        const timezone =
-          this.nighthawk.config.timezone === 'guess'
-            ? DateTime.local().zoneName
-            : this.nighthawk.config.timezone;
+        const timezone = this.nighthawk.config.timezone === "guess" ? DateTime.local().zoneName : this.nighthawk.config.timezone;
 
         if (response && response.selectedDate) {
           const date = DateTime.fromISO(response.selectedDate, {
             zone: timezone,
-          }).toFormat('dd.MM.yyyy');
+          }).toFormat("dd.MM.yyyy");
 
           dateString = `${date}-${date}`;
         } else if (response && response.startDate && response.endDate) {
           const start = DateTime.fromISO(response.startDate, {
             zone: timezone,
-          }).toFormat('dd.MM.yyyy');
+          }).toFormat("dd.MM.yyyy");
 
           const end = DateTime.fromISO(response.endDate, {
             zone: timezone,
-          }).toFormat('dd.MM.yyyy');
+          }).toFormat("dd.MM.yyyy");
 
           dateString = `${start}-${end}`;
         }
 
-        const currentPath = this.router.url.split('?')[0];
+        const currentPath = this.router.url.split("?")[0];
         const params: any = {};
         params[fieldName] = dateString;
 
         this.router.navigate([currentPath], {
           queryParams: params,
-          queryParamsHandling: 'merge',
+          queryParamsHandling: "merge",
         });
       }
     });
   }
 
-  public onSortChange(sortData: {
-    sortField: string;
-    sortDirection: 'asc' | 'desc' | '';
-  }): void {
-    const currentPath = this.router.url.split('?')[0];
+  public onSortChange(sortData: { sortField: string; sortDirection: "asc" | "desc" | "" }): void {
+    const currentPath = this.router.url.split("?")[0];
     this.router.navigate([currentPath], {
       queryParams: {
         ...this.config.searchQueryParams,
         sort: sortData.sortField,
         direction: sortData.sortDirection,
       },
-      queryParamsHandling: 'merge',
+      queryParamsHandling: "merge",
     });
   }
 
@@ -401,10 +377,10 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
 
   public onSelectPage(pageNumber: number): void {
     this.config.page = pageNumber;
-    const currentPath = this.router.url.split('?')[0];
+    const currentPath = this.router.url.split("?")[0];
     this.router.navigate([currentPath], {
       queryParams: { page: pageNumber },
-      queryParamsHandling: 'merge',
+      queryParamsHandling: "merge",
     });
   }
 
@@ -430,7 +406,7 @@ export class NighthawkTableComponent implements OnInit, AfterContentInit {
           catchError(() => {
             this.data = [];
             return of([]);
-          })
+          }),
         )
         .subscribe((response) => {
           if (this.currentRequestId === requestId) {

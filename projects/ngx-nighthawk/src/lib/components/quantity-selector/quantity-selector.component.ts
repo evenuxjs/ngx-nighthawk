@@ -1,30 +1,15 @@
-import {
-  Component,
-  Input,
-  forwardRef,
-  Output,
-  EventEmitter,
-} from '@angular/core';
-import {
-  ControlValueAccessor,
-  FormsModule,
-  NG_VALUE_ACCESSOR,
-} from '@angular/forms';
-import { NighthawkButtonDirective } from '../../directives/button.directive';
-import { NighthawkFormControlDirective } from '../../directives/form-control.directive';
-import { CommonModule } from '@angular/common';
+import { Component, Input, forwardRef, Output, EventEmitter, OnChanges } from "@angular/core";
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { NighthawkButtonDirective } from "../../directives/button.directive";
+import { NighthawkFormControlDirective } from "../../directives/form-control.directive";
+import { CommonModule } from "@angular/common";
 
 @Component({
   standalone: true,
-  selector: 'nighthawk-quantity-selector',
-  templateUrl: './quantity-selector.component.html',
-  styleUrls: ['./quantity-selector.component.scss'],
-  imports: [
-    CommonModule,
-    FormsModule,
-    NighthawkButtonDirective,
-    NighthawkFormControlDirective,
-  ],
+  selector: "nighthawk-quantity-selector",
+  templateUrl: "./quantity-selector.component.html",
+  styleUrls: ["./quantity-selector.component.scss"],
+  imports: [CommonModule, FormsModule, NighthawkButtonDirective, NighthawkFormControlDirective],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -33,15 +18,13 @@ import { CommonModule } from '@angular/common';
     },
   ],
 })
-export class NighthawkQuantitySelectorComponent
-  implements ControlValueAccessor
-{
-  @Input() size: 'large' | 'medium' | 'small' = 'medium';
-  @Input() maxQuantity: number = 99999;
+export class NighthawkQuantitySelectorComponent implements ControlValueAccessor, OnChanges {
+  @Input() size: "large" | "medium" | "small" = "medium";
+  @Input() maxQuantity = 99999;
   @Output() onQuantityChange = new EventEmitter<number>();
 
-  public quantity: number = 1;
-  public maxLength: number = 5;
+  public quantity = 1;
+  public maxLength = 5;
 
   private onChange: (quantity: number) => void = () => {};
   private onTouched: () => void = () => {};
@@ -98,10 +81,10 @@ export class NighthawkQuantitySelectorComponent
   }
 
   public validate(evt: any): void {
-    var theEvent = evt || window.event;
-    var key = theEvent.keyCode || theEvent.which;
+    const theEvent = evt || window.event;
+    let key = theEvent.keyCode || theEvent.which;
     key = String.fromCharCode(key);
-    var regex = /[0-9]|\./;
+    const regex = /[0-9]|\./;
     if (!regex.test(key)) {
       theEvent.returnValue = false;
       if (theEvent.preventDefault) theEvent.preventDefault();

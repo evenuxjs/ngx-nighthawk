@@ -1,6 +1,6 @@
 {
   "name": "ngx-nighthawk",
-  "version": "8.0.3",
+  "version": "8.0.0",
   "peerDependencies": {
     "@angular/cdk": "^20.0.4",
     "@angular/common": "^20.0.5",

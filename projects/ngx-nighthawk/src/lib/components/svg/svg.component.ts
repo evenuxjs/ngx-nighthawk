@@ -1,33 +1,34 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Component, OnInit, Input, ElementRef, inject } from "@angular/core";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
 
 @Component({
-  selector: 'nighthawk-svg',
-  styleUrl: './svg.component.scss',
+  selector: "nighthawk-svg",
+  styleUrl: "./svg.component.scss",
   template: `
-  @if (isSvg) {
-    <ng-template>
-      {{ src }}
-    </ng-template>
-  } @else {
-    <img [src]="src" alt="" />
-  }
+    @if (isSvg) {
+      <ng-template>
+        {{ src }}
+      </ng-template>
+    } @else {
+      <img [src]="src" alt="" />
+    }
   `,
   standalone: true,
   imports: [HttpClientModule],
 })
 export class SvgComponent implements OnInit {
-  @Input() public src = '';
+  private el = inject(ElementRef);
+  private http = inject(HttpClient);
 
-  public isSvg: boolean = false;
+  @Input() public src = "";
 
-  constructor(private el: ElementRef, private http: HttpClient) {}
+  public isSvg = false;
 
   public ngOnInit(): void {
-    const parts = this.src.split('.');
-    this.isSvg = parts[parts.length - 1] === 'svg';
+    const parts = this.src.split(".");
+    this.isSvg = parts[parts.length - 1] === "svg";
     if (this.isSvg) {
-      this.http.get(this.src, { responseType: 'text' }).subscribe((svg) => {
+      this.http.get(this.src, { responseType: "text" }).subscribe((svg) => {
         this.el.nativeElement.innerHTML = svg;
       });
     }

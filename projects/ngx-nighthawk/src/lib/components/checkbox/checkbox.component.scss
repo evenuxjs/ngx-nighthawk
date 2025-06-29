@@ -39,7 +39,7 @@
 
       &:after {
         font: normal normal normal 14px / 1 FontAwesome;
-        content: '\f00c';
+        content: "\f00c";
         position: absolute;
         color: var(--checkbox-checkmark-color);
         opacity: 0;
@@ -111,7 +111,7 @@
       border-radius: 99px;
 
       &:after {
-        content: '';
+        content: "";
         position: absolute;
         left: 3px;
         top: 3px;
